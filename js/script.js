@@ -286,4 +286,92 @@
       if (deltaX < 0) siguienteFoto(); else anteriorFoto();
     }, { passive: true });
   }
+
+  /* ---------- Carrusel de fotos por categoría ----------
+     Scroll horizontal NATIVO (overflow-x + scroll-snap) en vez de mover un
+     flex track a mano con transform: ese enfoque daba un bug real donde las
+     fotos se volvían invisibles al navegar varias veces (glitch de pintado
+     del navegador con overflow:hidden + transform + muchas imágenes). Con
+     scroll nativo el navegador se encarga de todo, incluido el swipe. */
+  document.querySelectorAll('[data-carousel]').forEach(function (carousel) {
+    var pista = carousel.querySelector('.carousel-pista');
+    var slides = Array.prototype.slice.call(carousel.querySelectorAll('.carousel-slide'));
+    var btnPrev = carousel.querySelector('.carousel-flecha-prev');
+    var btnNext = carousel.querySelector('.carousel-flecha-next');
+    var contadorWrap = carousel.querySelector('.carousel-dots');
+    var indiceActivo = 0;
+
+    if (!slides.length) return;
+
+    function anchoDesplazamiento() {
+      var gap = parseFloat(getComputedStyle(pista).columnGap) || 0;
+      return slides[0].getBoundingClientRect().width + gap;
+    }
+
+    /* El índice "activo" se calcula directamente del scroll (no con
+       IntersectionObserver): con varias fotos visibles a la vez (pantallas
+       anchas), el observer podía marcar como activa la última foto visible
+       en vez de la primera, dejando la flecha "anterior" habilitada estando
+       ya en el inicio. Con scrollLeft es exacto sin importar cuántas fotos
+       quepan por página. */
+    function indiceDesdeScroll() {
+      var paso = anchoDesplazamiento();
+      if (!paso) return 0;
+      return Math.round(pista.scrollLeft / paso);
+    }
+
+    function estaAlInicio() { return pista.scrollLeft <= 4; }
+    function estaAlFinal() { return pista.scrollLeft + pista.clientWidth >= pista.scrollWidth - 4; }
+
+    function actualizarFlechas() {
+      if (btnPrev) btnPrev.disabled = estaAlInicio();
+      if (btnNext) btnNext.disabled = estaAlFinal();
+    }
+
+    /* Contador "07 / 25" en todas las categorías: deja claro cuál modelo se
+       está viendo al pasar con las flechas, sin saturar de puntitos cuando
+       hay muchas fotos (Pantalonetas). */
+    var contadorEl = null;
+
+    function pad2(n) { return n < 10 ? '0' + n : String(n); }
+
+    function actualizarContador() {
+      var indice = Math.min(slides.length - 1, indiceDesdeScroll());
+      if (indice === indiceActivo) return;
+      indiceActivo = indice;
+      if (contadorEl) contadorEl.textContent = pad2(indice + 1) + ' / ' + slides.length;
+    }
+
+    function alScrollearCarrusel() {
+      actualizarContador();
+      actualizarFlechas();
+    }
+
+    function crearContador() {
+      contadorWrap.innerHTML = '';
+      contadorEl = document.createElement('span');
+      contadorEl.className = 'carousel-contador';
+      contadorEl.textContent = '01 / ' + slides.length;
+      contadorWrap.appendChild(contadorEl);
+    }
+
+    if (btnPrev) btnPrev.addEventListener('click', function () {
+      pista.scrollBy({ left: -anchoDesplazamiento(), behavior: 'smooth' });
+    });
+
+    if (btnNext) btnNext.addEventListener('click', function () {
+      pista.scrollBy({ left: anchoDesplazamiento(), behavior: 'smooth' });
+    });
+
+    var pistaTimeoutScroll;
+    pista.addEventListener('scroll', function () {
+      window.clearTimeout(pistaTimeoutScroll);
+      pistaTimeoutScroll = window.setTimeout(alScrollearCarrusel, 60);
+    }, { passive: true });
+
+    window.addEventListener('resize', actualizarFlechas);
+
+    crearContador();
+    actualizarFlechas();
+  });
 })();

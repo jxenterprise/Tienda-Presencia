@@ -595,6 +595,7 @@ body.scroll-bloqueado {
 }
 
 .cat-foto {
+  position: relative;
   display: block;
   padding: 0;
   border: 1.5px solid rgba(212, 160, 23, .3);
@@ -610,6 +611,144 @@ body.scroll-bloqueado {
   height: 100%;
   object-fit: cover;
   transition: transform .5s ease;
+}
+
+/* Numerito de referencia sobre cada foto (para pedir "el modelo #07" por
+   WhatsApp) — pequeño y semitransparente para no tapar la prenda. */
+.cat-numero {
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 25px;
+  height: 21px;
+  padding: 0 .35rem;
+  border-radius: 999px;
+  background: rgba(13, 11, 8, .68);
+  border: 1px solid rgba(212, 160, 23, .55);
+  color: var(--dorado-claro);
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: .66rem;
+  letter-spacing: .03em;
+  pointer-events: none;
+}
+
+/* ---------- Carrusel de fotos por categoría ----------
+   Scroll horizontal NATIVO con scroll-snap (no transform calculado a mano):
+   más robusto, swipe gratis en móvil, sin los glitches de renderizado que
+   da mover un flex track con JS + transform + overflow:hidden. */
+.carousel { position: relative; }
+
+.carousel-pista {
+  display: flex;
+  gap: .8rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 2px 1rem;
+  margin-bottom: -1rem;
+}
+
+.carousel-pista::-webkit-scrollbar { display: none; }
+
+.carousel-slide {
+  flex: 0 0 calc(50% - .4rem);
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.carousel-slide .cat-foto { width: 100%; aspect-ratio: 3 / 4; }
+.carousel-slide .cat-foto img { width: 100%; height: 100%; object-fit: cover; }
+
+.carousel-flecha {
+  position: absolute;
+  top: 38%;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  color: var(--negro);
+  background: var(--grad-oro-btn);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .45);
+  cursor: pointer;
+  transition: transform var(--transicion), box-shadow var(--transicion), opacity var(--transicion);
+}
+
+.carousel-flecha[disabled] { opacity: 0; pointer-events: none; }
+
+.carousel-flecha svg { width: 20px; height: 20px; }
+
+.carousel-flecha-prev { left: 2px; }
+.carousel-flecha-next { right: 2px; }
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  margin-top: .7rem;
+}
+
+/* Contador "07 / 25": deja claro cuál modelo se está viendo, para todas
+   las categorías (en vez de un punto por foto, que con 20+ se ve saturado) */
+
+.carousel-contador {
+  display: inline-flex;
+  align-items: center;
+  padding: .3rem .9rem;
+  border-radius: 999px;
+  border: 1px solid rgba(212, 160, 23, .4);
+  background: rgba(13, 11, 8, .6);
+  color: var(--dorado-claro);
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: .82rem;
+  letter-spacing: .04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.carousel-dot.activo {
+  background: var(--dorado);
+  transform: scale(1.2);
+}
+
+/* Variante para categorías con fotos horizontales (Pantalonetas: 5:3 en vez de 3:4).
+   Se muestran menos por pantalla ya que cada foto ocupa más ancho. */
+.carousel-horizontal .carousel-slide { flex: 0 0 calc(78% - .4rem); }
+.carousel-horizontal .carousel-slide .cat-foto { aspect-ratio: 5 / 3; }
+
+/* --- Responsive carrusel --- */
+@media (min-width: 480px) {
+  .carousel-horizontal .carousel-slide { flex: 0 0 calc(55% - .5rem); }
+}
+
+@media (min-width: 600px) {
+  .carousel-slide { flex: 0 0 calc(33.333% - .55rem); }
+  .carousel-horizontal .carousel-slide { flex: 0 0 calc(42% - .6rem); }
+  .carousel-flecha { width: 46px; height: 46px; }
+  .carousel-flecha svg { width: 22px; height: 22px; }
+}
+
+@media (min-width: 900px) {
+  .carousel-pista { gap: 1rem; }
+  .carousel-slide { flex: 0 0 calc(25% - .75rem); }
+  .carousel-horizontal .carousel-slide { flex: 0 0 calc(32% - .75rem); }
+  .carousel-flecha { width: 48px; height: 48px; }
+  .carousel-flecha-prev { left: -14px; }
+  .carousel-flecha-next { right: -14px; }
+}
+
+@media (min-width: 1100px) {
+  .carousel-slide { flex: 0 0 calc(20% - .8rem); }
+  .carousel-horizontal .carousel-slide { flex: 0 0 calc(24% - .8rem); }
 }
 
 /* Tarjeta "Conjuntos" (sin fotos todavía) */

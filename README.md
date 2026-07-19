@@ -13,9 +13,10 @@ Diseño y desarrollo: **JX Company**.
   tipo insignia (Cinzel) y caligrafía para los lemas (Great Vibes).
 - Catálogo real por categorías (Buzos, Camisetas, Suéteres, Pantalonetas, Conjuntos —
   Suéteres y Conjuntos como "Próximamente" hasta que lleguen las fotos) sobre la textura
-  de pared de piedra del logo: cuadrícula de fotos con lightbox (ampliar, navegar, deslizar
-  en móvil, transición de crossfade entre fotos) y botón de WhatsApp por categoría y por
-  foto, con mensaje pre-rellenado.
+  de pared de piedra del logo: carrusel de fotos por categoría (scroll horizontal nativo,
+  swipe en móvil, contador de posición, numerito visible en cada foto) con lightbox al
+  ampliar (navegar, transición de crossfade) y botón de WhatsApp por categoría y por foto,
+  con mensaje pre-rellenado.
 - Menú móvil como panel deslizante desde la derecha (mismo lado que el botón hamburguesa),
   con bloqueo de scroll robusto (a prueba del bug clásico de iOS Safari).
 - 100% responsive (móvil pequeño → escritorio grande), mobile-first.
