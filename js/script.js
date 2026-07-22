@@ -147,6 +147,7 @@
     var nombreSingular = {
       'Buzos': 'Buzo',
       'Camisetas': 'Camiseta',
+      'Gorras': 'Gorra',
       'Pantalonetas': 'Pantaloneta'
     };
 

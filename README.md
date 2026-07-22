@@ -1,8 +1,8 @@
 # PRESENCIA — Tienda de Ropa · Cartagena
 
 Landing page oficial de **PRESENCIA**, tienda de ropa en el barrio Nuevo Campestre,
-Cartagena de Indias (Colombia). Moda con colecciones exclusivas: buzos, camisetas y
-pantalonetas. Contacto directo por WhatsApp e Instagram
+Cartagena de Indias (Colombia). Moda con colecciones exclusivas: buzos, camisetas,
+gorras y pantalonetas. Contacto directo por WhatsApp e Instagram
 ([@presenciamodacartagena](https://www.instagram.com/presenciamodacartagena/)).
 
 Diseño y desarrollo: **JX Company**.
@@ -11,8 +11,8 @@ Diseño y desarrollo: **JX Company**.
 
 - Diseño 100% basado en la identidad del logo oficial: paleta dorado/negro, tipografía
   tipo insignia (Cinzel) y caligrafía para los lemas (Great Vibes).
-- Catálogo real por categorías (Buzos, Camisetas, Suéteres, Pantalonetas, Conjuntos —
-  Suéteres y Conjuntos como "Próximamente" hasta que lleguen las fotos) sobre la textura
+- Catálogo real por categorías (Buzos, Camisetas, Gorras, Pantalonetas, Conjuntos —
+  Conjuntos como "Próximamente" hasta que lleguen las fotos) sobre la textura
   de pared de piedra del logo: carrusel de fotos por categoría (scroll horizontal nativo,
   swipe en móvil, contador de posición, numerito visible en cada foto) con lightbox al
   ampliar (navegar, transición de crossfade) y botón de WhatsApp por categoría y por foto,
@@ -52,7 +52,7 @@ presencia-tienda/
     │   └── og-image.jpg           # Imagen al compartir por WhatsApp/redes
     ├── buzos/           buzo-01.webp … buzo-10.webp
     ├── camisetas/       camiseta-01.webp … camiseta-09.webp
-    ├── sueteres/        (vacía por ahora — categoría "Próximamente")
+    ├── gorras/          gorra-01.webp … gorra-15.webp
     ├── pantalonetas/    pantaloneta-01.webp … pantaloneta-25.webp
     └── conjuntos/       (vacía por ahora — categoría "Próximamente")
 ```
@@ -110,7 +110,7 @@ archivo `_headers` que ya está en el repo empezaría a funcionar tal cual, sin 
 |---|---|
 | Número de WhatsApp | Ya puesto: `+57 300 820 7862`. Si cambia: `index.html` y `js/script.js`, buscar `573008207862` y reemplazar **todas** las apariciones |
 | Textos de secciones | `index.html`: cada sección está marcada con comentarios `====` |
-| Fotos / precios del catálogo | `index.html` → sección `#catalogo`; fotos en `img/buzos/`, `img/camisetas/`, `img/sueteres/`, `img/pantalonetas/`, `img/conjuntos/` |
+| Fotos / precios del catálogo | `index.html` → sección `#catalogo`; fotos en `img/buzos/`, `img/camisetas/`, `img/gorras/`, `img/pantalonetas/`, `img/conjuntos/` |
 | Dirección y horario | `index.html` → sección `#ubicacion` (y JSON-LD del `<head>`) |
 | Colores o tipografías | `css/styles.css` → bloque `:root` |
 | Imágenes | Carpeta `img/` (subcarpetas en minúsculas, ver `CLAUDE.md`) |
