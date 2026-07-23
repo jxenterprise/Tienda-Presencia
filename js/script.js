@@ -151,6 +151,14 @@
       'Pantalonetas': 'Pantaloneta'
     };
 
+    /* Género de cada categoría, para el artículo del mensaje ("el Buzo" / "la Camiseta") */
+    var articuloSingular = {
+      'Buzos': 'el',
+      'Camisetas': 'la',
+      'Gorras': 'la',
+      'Pantalonetas': 'la'
+    };
+
     var grupoActual = [];
     var indiceActual = 0;
     var disparador = null;
@@ -163,19 +171,29 @@
       return Array.prototype.slice.call(categoria.querySelectorAll('.cat-foto'));
     }
 
+    /* Buzos, Camisetas y Pantalonetas tienen `data-descripcion` (color/marca real
+       de cada foto, revisada una por una) y usan eso en vez del numerito en el
+       mensaje de WhatsApp — se ve mucho más natural que "Buzo #03". Gorras se
+       queda con el numerito de siempre: cada foto suya es una foto de estante
+       con varias gorras juntas (no una prenda), así que no hay una sola
+       descripción de color/marca que tenga sentido ahí. */
     function actualizarLightbox() {
       var boton = grupoActual[indiceActual];
       var img = boton.querySelector('img');
       var categoria = boton.closest('.cat-categoria');
       var nombreCategoria = categoria.getAttribute('data-categoria') || '';
       var singular = nombreSingular[nombreCategoria] || nombreCategoria;
-      var etiqueta = singular + ' #' + conCero(indiceActual + 1);
+      var articulo = articuloSingular[nombreCategoria] || 'el';
+      var descripcion = boton.getAttribute('data-descripcion');
+      var etiqueta = descripcion ? (singular + ' ' + descripcion) : (singular + ' #' + conCero(indiceActual + 1));
 
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
-      lightboxCaption.textContent = etiqueta + ' de ' + grupoActual.length;
+      lightboxCaption.textContent = descripcion
+        ? etiqueta + ' — ' + (indiceActual + 1) + ' de ' + grupoActual.length
+        : etiqueta + ' de ' + grupoActual.length;
 
-      var mensaje = 'Hola, me interesa el ' + etiqueta + ' que vi en la página de PRESENCIA';
+      var mensaje = 'Hola, me interesa ' + articulo + ' ' + etiqueta + ' que vi en la página de PRESENCIA';
       lightboxWa.href = 'https://wa.me/' + numeroWhatsApp + '?text=' + encodeURIComponent(mensaje);
 
       var haySoloUna = grupoActual.length <= 1;
