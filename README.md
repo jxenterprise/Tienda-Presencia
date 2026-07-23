@@ -15,8 +15,9 @@ Diseño y desarrollo: **JX Company**.
   Conjuntos como "Próximamente" hasta que lleguen las fotos) sobre la textura
   de pared de piedra del logo: carrusel de fotos por categoría (scroll horizontal nativo,
   swipe en móvil, contador de posición, numerito visible en cada foto) con lightbox al
-  ampliar (navegar, transición de crossfade) y botón de WhatsApp por categoría y por foto,
-  con mensaje pre-rellenado.
+  ampliar (navegar, transición de crossfade) y botón de WhatsApp por categoría y por foto: abre
+  el chat de la tienda con mensaje pre-rellenado, descarga la foto que se estaba viendo y muestra
+  un modal de confirmación antes de redirigir, para que el cliente pueda adjuntarla en el chat.
 - Menú móvil como panel deslizante desde la derecha (mismo lado que el botón hamburguesa),
   con bloqueo de scroll robusto (a prueba del bug clásico de iOS Safari).
 - 100% responsive (móvil pequeño → escritorio grande), mobile-first.
@@ -88,9 +89,9 @@ Pages del repo → elegir la rama/carpeta a publicar). No necesita build ni conf
 > (`?v=2`, `?v=3`, …) en `index.html`.** Si no lo subes, los celulares (que cachean el CSS/JS de
 > forma agresiva) pueden seguir mostrando la versión vieja después de publicar el cambio.
 
-> El dominio final del proyecto es **`tiendapresencia.com`** (ya configurado en canonical,
+> El dominio final del proyecto es **`presenciamodactg.com`** (ya configurado en canonical,
 > Open Graph, `robots.txt`, `sitemap.xml` y JSON-LD). Para conectarlo sobre GitHub Pages: agregar
-> un archivo **`CNAME`** en la raíz del repo con `tiendapresencia.com` adentro, y configurar los
+> un archivo **`CNAME`** en la raíz del repo con `presenciamodactg.com` adentro, y configurar los
 > DNS del dominio apuntando a GitHub Pages. Ver detalles en `CLAUDE.md`.
 
 ### Alternativas
@@ -110,7 +111,7 @@ archivo `_headers` que ya está en el repo empezaría a funcionar tal cual, sin 
 |---|---|
 | Número de WhatsApp | Ya puesto: `+57 300 820 7862`. Si cambia: `index.html` y `js/script.js`, buscar `573008207862` y reemplazar **todas** las apariciones |
 | Textos de secciones | `index.html`: cada sección está marcada con comentarios `====` |
-| Fotos / precios del catálogo | `index.html` → sección `#catalogo`; fotos en `img/buzos/`, `img/camisetas/`, `img/gorras/`, `img/pantalonetas/`, `img/conjuntos/` |
+| Fotos del catálogo | `index.html` → sección `#catalogo`; fotos en `img/buzos/`, `img/camisetas/`, `img/gorras/`, `img/pantalonetas/`, `img/conjuntos/` (sin precios ni tallas — decisión del dueño, siempre se preguntan por WhatsApp) |
 | Dirección y horario | `index.html` → sección `#ubicacion` (y JSON-LD del `<head>`) |
 | Colores o tipografías | `css/styles.css` → bloque `:root` |
 | Imágenes | Carpeta `img/` (subcarpetas en minúsculas, ver `CLAUDE.md`) |

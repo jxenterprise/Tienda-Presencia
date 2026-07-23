@@ -190,6 +190,8 @@
     }
 
     function alTeclear(e) {
+      if (modalDescarga && !modalDescarga.hidden) return;
+
       if (e.key === 'Escape') {
         cerrarLightbox();
         return;
@@ -263,6 +265,78 @@
         indiceActual = (indiceActual - 1 + grupoActual.length) % grupoActual.length;
       });
     }
+
+    /* Al preguntar por un modelo: abrir WhatsApp SIEMPRE al número correcto de
+       la tienda (garantizado, funciona con cualquier comprador aunque sea la
+       primera vez que le escribe) y, de paso, descargar la foto que estaba
+       viendo para que la adjunte con un toque extra en el chat que se abrió.
+       No se usa la Web Share API aquí a propósito: el menú nativo de
+       compartir abre la lista de chats/contactos DE WHATSAPP, no puede
+       apuntar a un número fijo — un comprador nuevo que no tenga guardado el
+       número de la tienda no lo vería en esa lista y el mensaje no llegaría
+       (WhatsApp no expone esa función a una página web). `wa.me` sí está
+       hecho justo para esto (abrir un chat con un número fijo sin tenerlo
+       guardado), pero solo admite texto — de ahí el combo texto + descarga.
+
+       Para poder avisarle primero al comprador ("¡foto guardada!") y RECIÉN
+       ahí mandarlo a WhatsApp, hay que reservar la pestaña nueva en el mismo
+       clic (los navegadores bloquean cualquier `window.open` que no pase
+       dentro del gesto directo del usuario) y navegarla después, cuando se
+       cierra el modal — por eso `window.open('about:blank', ...)` se llama
+       ANTES de mostrar el modal, no después. */
+    var modalDescarga = document.getElementById('modalDescarga');
+    var modalDescargaFondo = document.getElementById('modalDescargaFondo');
+    var modalDescargaContinuar = document.getElementById('modalDescargaContinuar');
+    var temporizadorModal = null;
+    var pestanaWaPendiente = null;
+
+    function irAWhatsApp() {
+      if (pestanaWaPendiente) {
+        pestanaWaPendiente.location.href = lightboxWa.href;
+      } else {
+        window.open(lightboxWa.href, '_blank', 'noopener');
+      }
+      pestanaWaPendiente = null;
+    }
+
+    function cerrarModalDescarga(irAWa) {
+      window.clearTimeout(temporizadorModal);
+      modalDescarga.hidden = true;
+      desbloquearScroll();
+      if (irAWa) irAWhatsApp();
+    }
+
+    function abrirModalDescarga() {
+      modalDescarga.hidden = false;
+      bloquearScroll();
+      modalDescargaContinuar.focus();
+      temporizadorModal = window.setTimeout(function () {
+        cerrarModalDescarga(true);
+      }, 1800);
+    }
+
+    modalDescargaContinuar.addEventListener('click', function () { cerrarModalDescarga(true); });
+    modalDescargaFondo.addEventListener('click', function () { cerrarModalDescarga(true); });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modalDescarga.hidden) cerrarModalDescarga(true);
+    });
+
+    function alClicWa(e) {
+      e.preventDefault();
+
+      pestanaWaPendiente = window.open('about:blank', '_blank');
+
+      var enlaceDescarga = document.createElement('a');
+      enlaceDescarga.href = lightboxImg.src;
+      enlaceDescarga.download = lightboxImg.src.split('/').pop().split('?')[0] || 'presencia.webp';
+      document.body.appendChild(enlaceDescarga);
+      enlaceDescarga.click();
+      enlaceDescarga.remove();
+
+      abrirModalDescarga();
+    }
+    lightboxWa.addEventListener('click', alClicWa);
 
     document.querySelectorAll('.cat-foto').forEach(function (boton) {
       boton.addEventListener('click', function () { abrirLightbox(boton); });
