@@ -2,8 +2,10 @@
 
 Landing page oficial de **PRESENCIA**, tienda de ropa en el barrio Nuevo Campestre,
 Cartagena de Indias (Colombia). Moda con colecciones exclusivas: buzos, camisetas,
-gorras y pantalonetas. Contacto directo por WhatsApp e Instagram
-([@presenciamodacartagena](https://www.instagram.com/presenciamodacartagena/)).
+gorras y pantalonetas. Contacto directo por WhatsApp, Instagram
+([@presenciamodacartagena](https://www.instagram.com/presenciamodacartagena/)),
+[Facebook](https://www.facebook.com/profile.php?id=61591960711304) y
+[TikTok](https://www.tiktok.com/@presenciamodacartagena).
 
 Diseño y desarrollo: **JX Company**.
 

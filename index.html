@@ -56,8 +56,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
   </noscript>
 
-  <link rel="stylesheet" href="css/styles.css?v=9">
-  <script src="js/script.js?v=9" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=10">
+  <script src="js/script.js?v=10" defer></script>
 
   <!-- ============ JSON-LD (datos estructurados) ============ -->
   <script type="application/ld+json">
@@ -93,7 +93,17 @@
           "addressCountry": "CO"
         },
         "geo": { "@type": "GeoCoordinates", "latitude": 10.3773, "longitude": -75.4996 },
-        "sameAs": [ "https://www.instagram.com/presenciamodacartagena/" ]
+        "openingHoursSpecification": {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
+          "opens": "08:00",
+          "closes": "19:00"
+        },
+        "sameAs": [
+          "https://www.instagram.com/presenciamodacartagena/",
+          "https://www.facebook.com/profile.php?id=61591960711304",
+          "https://www.tiktok.com/@presenciamodacartagena"
+        ]
       }
     ]
   }
@@ -777,7 +787,7 @@
               <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7.5V12l3 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </div>
             <h3>Horario de atención</h3>
-            <p class="dato-pendiente">Horario: <mark class="pendiente">{POR CONFIRMAR}</mark></p>
+            <p>Todos los días, de 8:00 a.m. a 7:00 p.m.</p>
             <p>Por WhatsApp te respondemos lo antes posible.</p>
           </div>
 
@@ -785,9 +795,28 @@
             <div class="cat-icono" aria-hidden="true">
               <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.2" fill="currentColor"/></svg>
             </div>
-            <h3>Síguenos en Instagram</h3>
-            <p>Mira las novedades y colecciones en nuestro perfil.</p>
-            <a class="cat-cta" href="https://www.instagram.com/presenciamodacartagena/" target="_blank" rel="noopener">@presenciamodacartagena →</a>
+            <h3>Síguenos en redes</h3>
+            <p>Mira las novedades y colecciones en nuestros perfiles.</p>
+            <div class="redes-lista">
+              <a class="redes-link" href="https://www.instagram.com/presenciamodacartagena/" target="_blank" rel="noopener" aria-label="Instagram de PRESENCIA: @presenciamodacartagena">
+                <span class="redes-icono-circulo" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 0C8.74 0 8.333.014 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.014 8.333 0 8.74 0 12s.014 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.014 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.014-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.014 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.86.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+                </span>
+                <span class="redes-nombre">Instagram</span>
+              </a>
+              <a class="redes-link" href="https://www.facebook.com/profile.php?id=61591960711304" target="_blank" rel="noopener" aria-label="Facebook de PRESENCIA">
+                <span class="redes-icono-circulo" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.085 1.848-5.978 5.858-5.978.401 0 .955.042 1.468.103a8.68 8.68 0 0 1 1.141.195v3.325a8.623 8.623 0 0 0-.653-.036 26.805 26.805 0 0 0-.733-.009c-.707 0-1.259.096-1.675.309a1.686 1.686 0 0 0-.679.622c-.258.42-.374.995-.374 1.752v1.297h3.919l-.386 1.98-.287 1.687h-3.246v8.245C19.396 23.238 24 18.179 24 12.044c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.628 3.874 10.35 9.101 11.647Z"/></svg>
+                </span>
+                <span class="redes-nombre">Facebook</span>
+              </a>
+              <a class="redes-link" href="https://www.tiktok.com/@presenciamodacartagena" target="_blank" rel="noopener" aria-label="TikTok de PRESENCIA: @presenciamodacartagena">
+                <span class="redes-icono-circulo" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path fill="currentColor" d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6 0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64 0 3.33 2.76 5.7 5.69 5.7 3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.3 1.38V7.3s-1.88.09-3.24-1.48Z"/></svg>
+                </span>
+                <span class="redes-nombre">TikTok</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -804,7 +833,7 @@
           <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
           Hablar por WhatsApp
         </a>
-        <p class="cta-nota">También respondemos por Instagram: <a href="https://www.instagram.com/presenciamodacartagena/" target="_blank" rel="noopener">@presenciamodacartagena</a></p>
+        <p class="cta-nota">También nos encuentras en Instagram: <a href="https://www.instagram.com/presenciamodacartagena/" target="_blank" rel="noopener">@presenciamodacartagena</a>, <a href="https://www.facebook.com/profile.php?id=61591960711304" target="_blank" rel="noopener">Facebook</a> y <a href="https://www.tiktok.com/@presenciamodacartagena" target="_blank" rel="noopener">TikTok</a></p>
       </div>
     </section>
 
@@ -836,7 +865,7 @@
       <div class="footer-col">
         <h3 class="footer-titulo">Contacto</h3>
         <ul class="footer-lista">
-          <li>📍 Barrio Nuevo Campestre, Cartagena</li>
+          <li>📍 Mz S Lote 11, Cl 10B, Barrio Nuevo Campestre, Cartagena</li>
           <li>
             <a href="https://wa.me/573008207862?text=Hola%2C%20quiero%20conocer%20el%20cat%C3%A1logo%20de%20PRESENCIA" target="_blank" rel="noopener">
               📱 WhatsApp: +57 300 820 7862
@@ -845,6 +874,16 @@
           <li>
             <a href="https://www.instagram.com/presenciamodacartagena/" target="_blank" rel="noopener">
               Instagram: @presenciamodacartagena
+            </a>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/profile.php?id=61591960711304" target="_blank" rel="noopener">
+              Facebook: PRESENCIA
+            </a>
+          </li>
+          <li>
+            <a href="https://www.tiktok.com/@presenciamodacartagena" target="_blank" rel="noopener">
+              TikTok: @presenciamodacartagena
             </a>
           </li>
         </ul>
