@@ -75,14 +75,22 @@ python3 -m http.server 8000
 
 ## Publicar (deploy)
 
-### Hosting actual: GitHub Pages
+### Hosting actual: Cloudflare Pages
 
-El sitio se publica desde este mismo repositorio de GitHub, con **GitHub Pages** (Settings →
-Pages del repo → elegir la rama/carpeta a publicar). No necesita build ni configuración extra.
+El sitio se publica en **Cloudflare Pages** (proyecto `tienda-presencia`, dashboard → Workers y
+Pages), conectado directo a este repo de GitHub con **implementaciones automáticas**: cada
+`git push` a `main` dispara un deploy nuevo solo, sin pasos manuales. Framework preset `Ninguno`,
+sin build command, output en la raíz (`/`) — es HTML/CSS/JS puro, no hay nada que compilar.
 
-> ⚠️ **`_headers` no funciona en GitHub Pages** (ese archivo es un mecanismo propio de Cloudflare
-> Pages/Netlify; GitHub Pages lo ignora por completo). El cache-busting real en este proyecto es
-> el **query string de versión** en `index.html`:
+El dominio real, **`presenciamodactg.com`** (y `www.presenciamodactg.com`), se compró directo en
+**Cloudflare Registrar** y está conectado como dominio personalizado del proyecto — ambos
+Activos con SSL. Como el dominio y el hosting están en la misma cuenta de Cloudflare, no hace
+falta tocar nameservers ni archivos `CNAME` a mano.
+
+> ⚠️ **`_headers` (Cache-Control para CSS/JS) no está aplicando el `no-cache` esperado en
+> producción** (verificado con `curl -I`) — no se investigó a fondo el porqué porque no importa
+> en la práctica. El cache-busting real de este proyecto sigue siendo el **query string de
+> versión** en `index.html`:
 > ```html
 > <link rel="stylesheet" href="css/styles.css?v=1">
 > <script src="js/script.js?v=1" defer></script>
@@ -91,21 +99,21 @@ Pages del repo → elegir la rama/carpeta a publicar). No necesita build ni conf
 > (`?v=2`, `?v=3`, …) en `index.html`.** Si no lo subes, los celulares (que cachean el CSS/JS de
 > forma agresiva) pueden seguir mostrando la versión vieja después de publicar el cambio.
 
-> El dominio final del proyecto es **`presenciamodactg.com`** (ya configurado en canonical,
-> Open Graph, `robots.txt`, `sitemap.xml` y JSON-LD). Para conectarlo sobre GitHub Pages: agregar
-> un archivo **`CNAME`** en la raíz del repo con `presenciamodactg.com` adentro, y configurar los
-> DNS del dominio apuntando a GitHub Pages. Ver detalles en `CLAUDE.md`.
+### Alternativas / hosting anterior
 
-### Alternativas
-
-También funciona en cualquier otro hosting estático (Cloudflare Pages, Netlify, Hostinger…):
-basta con subir todos los archivos manteniendo las carpetas. Si se migra a Cloudflare Pages, el
-archivo `_headers` que ya está en el repo empezaría a funcionar tal cual, sin cambios.
+El proyecto sigue funcionando en cualquier otro hosting estático (Netlify, Hostinger, GitHub
+Pages…) — basta con subir todos los archivos manteniendo las carpetas. **GitHub Pages** fue el
+hosting usado antes de migrar a Cloudflare Pages; puede seguir activo en paralelo sin conflicto
+(nunca tuvo el dominio propio conectado), o desactivarse en Settings → Pages del repo cuando se
+quiera, no es urgente.
 
 ## Después de publicar
 
-1. Verificar la propiedad del sitio en **Google Search Console**.
-2. Enviar el `sitemap.xml` desde Search Console para acelerar la indexación.
+1. ✅ Ya hecho: propiedad verificada en **Google Search Console** (dominio `presenciamodactg.com`,
+   verificación automática vía la integración de Google con Cloudflare) y `sitemap.xml` enviado.
+2. **Pendiente:** crear/optimizar el **Google Business Profile** (business.google.com) — es lo
+   que más ayuda a aparecer en el mapa/búsquedas locales tipo "tienda de ropa en cartagena". Ver
+   la checklist completa en `CLAUDE.md`, sección "SEO y descubribilidad en Google".
 
 ## Cómo editar contenidos
 
