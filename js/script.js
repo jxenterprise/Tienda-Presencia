@@ -348,6 +348,8 @@
       var enlaceDescarga = document.createElement('a');
       enlaceDescarga.href = lightboxImg.src;
       enlaceDescarga.download = lightboxImg.src.split('/').pop().split('?')[0] || 'presencia.webp';
+      enlaceDescarga.target = '_blank';
+      enlaceDescarga.rel = 'noopener';
       document.body.appendChild(enlaceDescarga);
       enlaceDescarga.click();
       enlaceDescarga.remove();
