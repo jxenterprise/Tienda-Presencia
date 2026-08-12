@@ -55,7 +55,7 @@ presencia-tienda/
     │   └── og-image.jpg           # Imagen al compartir por WhatsApp/redes
     ├── buzos/           buzo-01.webp … buzo-10.webp
     ├── camisetas/       camiseta-01.webp … camiseta-09.webp
-    ├── gorras/          gorra-01.webp … gorra-15.webp
+    ├── gorras/          gorra-01.webp … gorra-21.webp
     ├── pantalonetas/    pantaloneta-01.webp … pantaloneta-25.webp
     └── conjuntos/       (vacía por ahora — categoría "Próximamente")
 ```

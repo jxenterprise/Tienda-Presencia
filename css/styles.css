@@ -640,6 +640,29 @@ body.scroll-bloqueado {
   pointer-events: none;
 }
 
+/* Etiqueta "Nuevo" sobre las fotos recién agregadas — esquina opuesta al
+   numerito, mismo dorado del resto del sitio, para que resalte sin chocar
+   con el numerito. */
+.cat-nuevo {
+  position: absolute;
+  top: .5rem;
+  right: .5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  padding: .2rem .55rem;
+  border-radius: 999px;
+  background: var(--grad-oro-btn);
+  color: var(--negro);
+  font-family: var(--fuente-titulo);
+  font-weight: 700;
+  font-size: .62rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, .35);
+  pointer-events: none;
+}
+
 /* ---------- Carrusel de fotos por categoría ----------
    Scroll horizontal NATIVO con scroll-snap (no transform calculado a mano):
    más robusto, swipe gratis en móvil, sin los glitches de renderizado que
