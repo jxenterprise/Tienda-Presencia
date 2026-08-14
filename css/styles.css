@@ -352,7 +352,8 @@ body.scroll-bloqueado {
     "logo"
     "boton"
     "resto"
-    "sellos";
+    "sellos"
+    "envio";
   row-gap: clamp(1.4rem, 4vw, 2rem);
   align-items: center;
   text-align: center;
@@ -440,6 +441,71 @@ body.scroll-bloqueado {
   font-weight: 600;
   letter-spacing: .04em;
   color: var(--dorado-suave);
+}
+
+/* ---------- Cintillo de domicilios gratis (hero) ---------- */
+.hero-envio {
+  grid-area: envio;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .55rem .9rem;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  padding: .75rem 1.15rem;
+  border: 1px solid rgba(212, 160, 23, .45);
+  border-radius: var(--radio);
+  background:
+    linear-gradient(180deg, rgba(212, 160, 23, .14) 0%, rgba(212, 160, 23, .05) 100%),
+    var(--carbon);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, .38);
+}
+
+.hero-envio-texto {
+  display: flex;
+  align-items: center;
+  gap: .55rem;
+  font-size: clamp(.95rem, 2.7vw, 1.05rem);
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--crema);
+}
+
+.hero-envio-texto strong {
+  color: var(--dorado-claro);
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+
+.hero-envio-icono {
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  color: var(--dorado);
+}
+
+.hero-envio-tag {
+  padding: .32rem .72rem;
+  border-radius: 999px;
+  background: var(--grad-oro-btn);
+  color: #2a1f05;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* El latido solo para quien no pidió menos movimiento */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-envio-tag { animation: pulso-oferta 2.6s ease-in-out infinite; }
+}
+
+@keyframes pulso-oferta {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(246, 211, 101, .5); }
+  50%      { transform: scale(1.05); box-shadow: 0 0 0 8px rgba(246, 211, 101, 0); }
 }
 
 .hero-imagen {
@@ -1315,6 +1381,8 @@ body.scroll-bloqueado {
   .hero-sub { letter-spacing: .22em; }
   .btn { width: 100%; padding-inline: 1.1rem; }
   .hero-sellos { flex-direction: column; align-items: center; gap: .45rem; }
+  .hero-envio { padding: .7rem .85rem; gap: .5rem; }
+  .hero-envio-icono { width: 22px; height: 22px; }
   .hero-imagen { max-width: 205px; }
   .cat-categoria-pronto, .info-card { padding: 1.4rem 1.1rem; }
   .cat-fotogrid { gap: .5rem; }
@@ -1435,7 +1503,8 @@ body.scroll-bloqueado {
       "lema   logo"
       "resto  logo"
       "boton  logo"
-      "sellos logo";
+      "sellos logo"
+      "envio  logo";
     column-gap: clamp(3rem, 6vw, 5rem);
     row-gap: clamp(1.4rem, 3vw, 1.8rem);
     text-align: left;
@@ -1446,6 +1515,7 @@ body.scroll-bloqueado {
   .hero-descripcion { margin-inline: 0; }
   .hero-botones { justify-content: flex-start; }
   .hero-sellos { justify-content: flex-start; }
+  .hero-envio { margin-inline: 0; justify-content: flex-start; }
   .hero-imagen { max-width: 520px; margin-right: 0; }
 
   .nosotros-grid { grid-template-columns: 1.1fr .9fr; align-items: center; }
