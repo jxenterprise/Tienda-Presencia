@@ -52,12 +52,17 @@
 
   /* ---------- Menú hamburguesa (móvil) ---------- */
   function cerrarMenu() {
+    /* Solo liberar el bloqueo si el menú estaba realmente abierto: en escritorio
+       este mismo manejador corre al pulsar cualquier enlace del nav (incluido el
+       botón de WhatsApp), y desbloquear de más disparaba el window.scrollTo de
+       abajo con una posición vieja, haciendo saltar la página al inicio. */
+    var estabaAbierto = nav.classList.contains('abierto');
     nav.classList.remove('abierto');
     btnMenu.classList.remove('activo');
     btnMenu.setAttribute('aria-expanded', 'false');
     btnMenu.setAttribute('aria-label', 'Abrir menú de navegación');
     if (navFondo) navFondo.classList.remove('visible');
-    desbloquearScroll();
+    if (estabaAbierto) desbloquearScroll();
   }
 
   function abrirMenu() {
@@ -171,12 +176,13 @@
       return Array.prototype.slice.call(categoria.querySelectorAll('.cat-foto'));
     }
 
-    /* Buzos, Camisetas y Pantalonetas tienen `data-descripcion` (color/marca real
-       de cada foto, revisada una por una) y usan eso en vez del numerito en el
-       mensaje de WhatsApp — se ve mucho más natural que "Buzo #03". Gorras se
-       queda con el numerito de siempre: cada foto suya es una foto de estante
-       con varias gorras juntas (no una prenda), así que no hay una sola
-       descripción de color/marca que tenga sentido ahí. */
+    /* Todas las fotos tienen `data-descripcion` (color/marca real, revisada una por
+       una) y el pie de foto la muestra completa. El mensaje de WhatsApp sí distingue:
+       cuando la descripción identifica UNA prenda, queda natural usarla ("me interesa
+       el Buzo blanco Tommy Hilfiger"). Pero varias fotos de Gorras son de un estante o
+       vitrina con muchas gorras juntas, y encadenar esa lista daba un mensaje ilegible
+       ("me interesa la Gorra estante MLB: NY, Diamondbacks, Saints, Dodgers LA, ..."),
+       así que esas se mandan por número de foto. */
     function actualizarLightbox() {
       var boton = grupoActual[indiceActual];
       var img = boton.querySelector('img');
@@ -185,7 +191,18 @@
       var singular = nombreSingular[nombreCategoria] || nombreCategoria;
       var articulo = articuloSingular[nombreCategoria] || 'el';
       var descripcion = boton.getAttribute('data-descripcion');
-      var etiqueta = descripcion ? (singular + ' ' + descripcion) : (singular + ' #' + conCero(indiceActual + 1));
+
+      /* Foto de estante/vitrina: varias gorras en una sola imagen, no una prenda suelta */
+      var esEstante = nombreCategoria === 'Gorras' && /^(estante|vitrina)\b/i.test(descripcion || '');
+
+      var etiqueta;
+      if (!descripcion) {
+        etiqueta = singular + ' #' + conCero(indiceActual + 1);
+      } else if (esEstante) {
+        etiqueta = 'Gorras en ' + descripcion;
+      } else {
+        etiqueta = singular + ' ' + descripcion;
+      }
 
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
@@ -193,7 +210,13 @@
         ? etiqueta + ' — ' + (indiceActual + 1) + ' de ' + grupoActual.length
         : etiqueta + ' de ' + grupoActual.length;
 
-      var mensaje = 'Hola, me interesa ' + articulo + ' ' + etiqueta + ' que vi en la página de PRESENCIA';
+      /* El número de foto viaja siempre en el mensaje: es el mismo numerito que el
+         cliente ve sobre la imagen, y hay descripciones repetidas entre fotos distintas
+         (dos pantalonetas Hugo Boss con el mismo texto, por ejemplo), así que sin él la
+         tienda no podría saber cuál modelo le están pidiendo. */
+      var mensaje = esEstante
+        ? 'Hola, me interesa una gorra de la foto #' + conCero(indiceActual + 1) + ' que vi en la página de PRESENCIA'
+        : 'Hola, me interesa ' + articulo + ' ' + etiqueta + ' (foto ' + conCero(indiceActual + 1) + ') que vi en la página de PRESENCIA';
       lightboxWa.href = 'https://wa.me/' + numeroWhatsApp + '?text=' + encodeURIComponent(mensaje);
 
       var haySoloUna = grupoActual.length <= 1;

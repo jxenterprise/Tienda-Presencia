@@ -656,13 +656,6 @@ body.scroll-bloqueado {
   transition: color var(--transicion), transform var(--transicion);
 }
 
-/* Cuadrícula de fotos: cada imagen conserva su proporción real (width/height del <img>) */
-.cat-fotogrid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: .7rem;
-}
-
 .cat-foto {
   position: relative;
   display: block;
@@ -708,7 +701,12 @@ body.scroll-bloqueado {
 
 /* Etiqueta "Nuevo" sobre las fotos recién agregadas — esquina opuesta al
    numerito, mismo dorado del resto del sitio, para que resalte sin chocar
-   con el numerito. */
+   con el numerito.
+
+   Ahora mismo no hay ninguna foto marcada: las 6 gorras que la llevaban desde
+   agosto dejaron de ser novedad y se les quitó. La regla se conserva a propósito
+   para volver a usarla cuando entre mercancía nueva — basta con añadir
+   <span class="cat-nuevo">Nuevo</span> dentro del botón .cat-foto. */
 .cat-nuevo {
   position: absolute;
   top: .5rem;
@@ -805,11 +803,6 @@ body.scroll-bloqueado {
   font-size: .82rem;
   letter-spacing: .04em;
   font-variant-numeric: tabular-nums;
-}
-
-.carousel-dot.activo {
-  background: var(--dorado);
-  transform: scale(1.2);
 }
 
 /* Variante para categorías con fotos horizontales (Pantalonetas: 5:3 en vez de 3:4).
@@ -1157,8 +1150,6 @@ body.scroll-bloqueado {
 
 .info-card p { font-size: .96rem; color: var(--gris-texto); }
 
-.dato-pendiente { font-size: .92rem; }
-
 /* Fila de íconos de redes sociales (tarjeta "Síguenos en redes" de #ubicacion) */
 .redes-lista {
   display: flex;
@@ -1385,7 +1376,6 @@ body.scroll-bloqueado {
   .hero-envio-icono { width: 22px; height: 22px; }
   .hero-imagen { max-width: 205px; }
   .cat-categoria-pronto, .info-card { padding: 1.4rem 1.1rem; }
-  .cat-fotogrid { gap: .5rem; }
   .lightbox-cerrar, .lightbox-nav { width: 40px; height: 40px; }
   .lightbox-cerrar svg, .lightbox-nav svg { width: 18px; height: 18px; }
 }
@@ -1411,8 +1401,6 @@ body.scroll-bloqueado {
   }
 
   .btn { width: auto; }
-
-  .cat-fotogrid { grid-template-columns: repeat(3, 1fr); }
 
   .confianza-grid { grid-template-columns: repeat(3, 1fr); }
 
@@ -1522,13 +1510,6 @@ body.scroll-bloqueado {
   .nosotros-texto { text-align: left; }
   .nosotros-texto .lema-grande { text-align: left; }
   .confianza-grid { grid-template-columns: 1fr; }
-
-  .cat-fotogrid { grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-}
-
-/* --- Escritorio amplio (≥1100px) --- */
-@media (min-width: 1100px) {
-  .cat-fotogrid { grid-template-columns: repeat(5, 1fr); }
 }
 
 /* --- TV y pantallas grandes (≥1440px): contenido limitado --- */
