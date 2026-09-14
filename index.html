@@ -1142,9 +1142,13 @@
          marcado Review fraudulento. Por eso esta sección todavía NO lleva
          datos estructurados; se añadirán junto con los testimonios de verdad.
 
-         Para activarla: sustituir el aviso .resenas-pendiente por tarjetas
-         <li class="resena-card"> con el nombre del cliente y lo que dijo. -->
-    <section class="resenas" id="resenas">
+         La sección va con el atributo `hidden` para no enseñarle al cliente final
+         un aviso interno que dice "Pendiente". El diseño ya está hecho y probado.
+
+         Para encenderla: quitar el `hidden` del <section> y sustituir el aviso
+         .resenas-pendiente por una <ul class="resenas-grid"> con tarjetas
+         <li class="resena-card"> (texto en .resena-texto y nombre en .resena-autor). -->
+    <section class="resenas" id="resenas" hidden>
       <div class="contenedor">
         <header class="seccion-cabecera reveal">
           <p class="script-oro">Lo que dicen de nosotros</p>
