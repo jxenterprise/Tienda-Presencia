@@ -132,9 +132,147 @@
     reveals.forEach(function (el) { observador.observe(el); });
   }
 
+  /* ---------- Orden de aparición escalonada de las fotos ----------
+     Solo a las primeras de cada categoría: son las únicas visibles antes de
+     desplazar el carrusel, y el resto entraría con un retardo absurdo. */
+  document.querySelectorAll('.cat-categoria').forEach(function (categoria) {
+    var slides = categoria.querySelectorAll('.carousel-slide');
+    for (var i = 0; i < slides.length && i < 6; i++) {
+      slides[i].style.setProperty('--orden', i);
+    }
+  });
+
+  /* ---------- Sección activa en el menú ---------- */
+  var enlacesNav = document.querySelectorAll('.nav-link');
+
+  if (enlacesNav.length && 'IntersectionObserver' in window) {
+    var enlacePorId = {};
+    enlacesNav.forEach(function (enlace) {
+      var destino = enlace.getAttribute('href') || '';
+      if (destino.charAt(0) === '#') enlacePorId[destino.slice(1)] = enlace;
+    });
+
+    /* La franja del centro de la pantalla decide cuál sección está "activa":
+       con secciones tan altas como el catálogo, mirar solo el borde superior
+       marcaría la siguiente demasiado pronto. */
+    var observadorSecciones = new IntersectionObserver(function (entradas) {
+      entradas.forEach(function (entrada) {
+        if (!entrada.isIntersecting) return;
+        var enlace = enlacePorId[entrada.target.id];
+        if (!enlace) return;
+        enlacesNav.forEach(function (a) { a.classList.remove('activo'); });
+        enlace.classList.add('activo');
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+
+    Object.keys(enlacePorId).forEach(function (id) {
+      var seccion = document.getElementById(id);
+      if (seccion) observadorSecciones.observe(seccion);
+    });
+  }
+
+  /* ---------- Botón "volver arriba" ----------
+     La página mide ~14.000px por el catálogo: desde el footer volver al inicio
+     a puro dedo es incómodo. Aparece pasada una pantalla de scroll. */
+  var btnArriba = document.getElementById('irArriba');
+
+  if (btnArriba) {
+    var arribaVisible = false;
+
+    function revisarBotonArriba() {
+      var debeVerse = window.scrollY > window.innerHeight * 0.9;
+      if (debeVerse === arribaVisible) return;
+      arribaVisible = debeVerse;
+
+      if (debeVerse) {
+        btnArriba.hidden = false;
+        btnArriba.classList.add('entrando');
+        void btnArriba.offsetWidth;           /* reflujo: si no, no se ve la transición */
+        btnArriba.classList.remove('entrando');
+      } else {
+        btnArriba.classList.add('entrando');
+        window.setTimeout(function () {
+          if (!arribaVisible) btnArriba.hidden = true;
+        }, 300);
+      }
+    }
+
+    window.addEventListener('scroll', revisarBotonArriba, { passive: true });
+    revisarBotonArriba();
+
+    btnArriba.addEventListener('click', function () {
+      window.scrollTo({ top: 0, left: 0, behavior: prefiereMenosMovimiento ? 'instant' : 'smooth' });
+      /* Devolver el foco al principio para quien navega con teclado */
+      var marca = document.querySelector('.marca');
+      if (marca) marca.focus({ preventScroll: true });
+    });
+  }
+
   /* ---------- Año automático en el footer ---------- */
   var anio = document.getElementById('anio');
   if (anio) anio.textContent = String(new Date().getFullYear());
+
+  /* ---------- Cómo se nombra cada prenda ----------
+     Lo comparten el lightbox y la selección múltiple, para que el cliente lea
+     exactamente el mismo nombre en la foto ampliada y en el mensaje que envía. */
+  var numeroWhatsApp = '573008207862';
+
+  var nombreSingular = {
+    'Buzos': 'Buzo',
+    'Camisetas': 'Camiseta',
+    'Gorras': 'Gorra',
+    'Pantalonetas': 'Pantaloneta'
+  };
+
+  /* Género de cada categoría, para el artículo del mensaje ("el Buzo" / "la Camiseta") */
+  var articuloSingular = {
+    'Buzos': 'el',
+    'Camisetas': 'la',
+    'Gorras': 'la',
+    'Pantalonetas': 'la'
+  };
+
+  /* Todas las fotos tienen `data-descripcion` (color/marca real, revisada una por
+     una) y el pie de foto la muestra completa. El mensaje de WhatsApp sí distingue:
+     cuando la descripción identifica UNA prenda, queda natural usarla ("me interesa
+     el Buzo blanco Tommy Hilfiger"). Pero varias fotos de Gorras son de un estante o
+     vitrina con muchas gorras juntas, y encadenar esa lista daba un mensaje ilegible
+     ("me interesa la Gorra estante MLB: NY, Diamondbacks, Saints, Dodgers LA, ..."),
+     así que esas se mandan por número de foto.
+
+     El número sale del `.cat-numero` que se ve sobre la imagen, no de la posición en
+     el carrusel: con el filtro de marca puesto la posición cambia, pero el numerito
+     que el cliente tiene delante —y que la tienda busca después— es siempre el mismo. */
+  function datosDeFoto(boton) {
+    var categoria = boton.closest('.cat-categoria');
+    var nombreCategoria = categoria ? (categoria.getAttribute('data-categoria') || '') : '';
+    var singular = nombreSingular[nombreCategoria] || nombreCategoria;
+    var descripcion = boton.getAttribute('data-descripcion') || '';
+    var numeroEl = boton.querySelector('.cat-numero');
+    var numero = numeroEl ? numeroEl.textContent.trim() : '';
+    var esEstante = nombreCategoria === 'Gorras' && /^(estante|vitrina)\b/i.test(descripcion);
+
+    var etiqueta;
+    if (!descripcion) etiqueta = singular + ' #' + numero;
+    else if (esEstante) etiqueta = 'Gorras en ' + descripcion;
+    else etiqueta = singular + ' ' + descripcion;
+
+    return {
+      categoria: nombreCategoria,
+      etiqueta: etiqueta,
+      numero: numero,
+      articulo: articuloSingular[nombreCategoria] || 'el',
+      esEstante: esEstante,
+      id: nombreCategoria + '-' + numero
+    };
+  }
+
+  /* Frase para UNA prenda, la misma en el lightbox y en la lista del pedido */
+  function frasePrenda(datos) {
+    return datos.esEstante
+      ? 'una gorra de la foto #' + datos.numero
+      : datos.articulo + ' ' + datos.etiqueta + ' (foto ' + datos.numero + ')';
+  }
 
   /* ---------- Lightbox del catálogo (fotos por categoría) ---------- */
   var lightbox = document.getElementById('lightbox');
@@ -147,76 +285,32 @@
     var lightboxPrev = document.getElementById('lightboxPrev');
     var lightboxNext = document.getElementById('lightboxNext');
     var lightboxFondo = document.getElementById('lightboxFondo');
-    var numeroWhatsApp = '573008207862';
-
-    var nombreSingular = {
-      'Buzos': 'Buzo',
-      'Camisetas': 'Camiseta',
-      'Gorras': 'Gorra',
-      'Pantalonetas': 'Pantaloneta'
-    };
-
-    /* Género de cada categoría, para el artículo del mensaje ("el Buzo" / "la Camiseta") */
-    var articuloSingular = {
-      'Buzos': 'el',
-      'Camisetas': 'la',
-      'Gorras': 'la',
-      'Pantalonetas': 'la'
-    };
 
     var grupoActual = [];
     var indiceActual = 0;
     var disparador = null;
 
-    function conCero(numero) {
-      return numero < 10 ? '0' + numero : String(numero);
-    }
-
+    /* Solo las fotos a la vista: con un filtro de marca puesto, pasar de foto
+       no debe llevar a prendas que el cliente acaba de filtrar. */
     function fotosDe(categoria) {
-      return Array.prototype.slice.call(categoria.querySelectorAll('.cat-foto'));
+      return Array.prototype.slice.call(categoria.querySelectorAll('.cat-foto'))
+        .filter(function (foto) {
+          var slide = foto.closest('.carousel-slide');
+          return !slide || !slide.hidden;
+        });
     }
 
-    /* Todas las fotos tienen `data-descripcion` (color/marca real, revisada una por
-       una) y el pie de foto la muestra completa. El mensaje de WhatsApp sí distingue:
-       cuando la descripción identifica UNA prenda, queda natural usarla ("me interesa
-       el Buzo blanco Tommy Hilfiger"). Pero varias fotos de Gorras son de un estante o
-       vitrina con muchas gorras juntas, y encadenar esa lista daba un mensaje ilegible
-       ("me interesa la Gorra estante MLB: NY, Diamondbacks, Saints, Dodgers LA, ..."),
-       así que esas se mandan por número de foto. */
     function actualizarLightbox() {
+      reiniciarZoom();
       var boton = grupoActual[indiceActual];
       var img = boton.querySelector('img');
-      var categoria = boton.closest('.cat-categoria');
-      var nombreCategoria = categoria.getAttribute('data-categoria') || '';
-      var singular = nombreSingular[nombreCategoria] || nombreCategoria;
-      var articulo = articuloSingular[nombreCategoria] || 'el';
-      var descripcion = boton.getAttribute('data-descripcion');
-
-      /* Foto de estante/vitrina: varias gorras en una sola imagen, no una prenda suelta */
-      var esEstante = nombreCategoria === 'Gorras' && /^(estante|vitrina)\b/i.test(descripcion || '');
-
-      var etiqueta;
-      if (!descripcion) {
-        etiqueta = singular + ' #' + conCero(indiceActual + 1);
-      } else if (esEstante) {
-        etiqueta = 'Gorras en ' + descripcion;
-      } else {
-        etiqueta = singular + ' ' + descripcion;
-      }
+      var datos = datosDeFoto(boton);
 
       lightboxImg.src = img.src;
       lightboxImg.alt = img.alt;
-      lightboxCaption.textContent = descripcion
-        ? etiqueta + ' — ' + (indiceActual + 1) + ' de ' + grupoActual.length
-        : etiqueta + ' de ' + grupoActual.length;
+      lightboxCaption.textContent = datos.etiqueta + ' — ' + (indiceActual + 1) + ' de ' + grupoActual.length;
 
-      /* El número de foto viaja siempre en el mensaje: es el mismo numerito que el
-         cliente ve sobre la imagen, y hay descripciones repetidas entre fotos distintas
-         (dos pantalonetas Hugo Boss con el mismo texto, por ejemplo), así que sin él la
-         tienda no podría saber cuál modelo le están pidiendo. */
-      var mensaje = esEstante
-        ? 'Hola, me interesa una gorra de la foto #' + conCero(indiceActual + 1) + ' que vi en la página de PRESENCIA'
-        : 'Hola, me interesa ' + articulo + ' ' + etiqueta + ' (foto ' + conCero(indiceActual + 1) + ') que vi en la página de PRESENCIA';
+      var mensaje = 'Hola, me interesa ' + frasePrenda(datos) + ' que vi en la página de PRESENCIA';
       lightboxWa.href = 'https://wa.me/' + numeroWhatsApp + '?text=' + encodeURIComponent(mensaje);
 
       var haySoloUna = grupoActual.length <= 1;
@@ -275,6 +369,7 @@
     }
 
     function cerrarLightbox() {
+      reiniciarZoom();
       lightbox.hidden = true;
       desbloquearScroll();
       document.removeEventListener('keydown', alTeclear);
@@ -282,6 +377,7 @@
     }
 
     function cambiarFoto(avanzarIndice) {
+      reiniciarZoom();          /* si no, el crossfade arrancaría con la foto ampliada */
       if (prefiereMenosMovimiento) {
         avanzarIndice();
         actualizarLightbox();
@@ -390,16 +486,129 @@
     lightboxPrev.addEventListener('click', anteriorFoto);
     lightboxNext.addEventListener('click', siguienteFoto);
 
-    /* Deslizar para cambiar de foto en móvil */
+    /* ---------- Zoom de la foto ampliada ----------
+       En ropa el detalle es lo que vende: la costura, el logo, la textura.
+       Doble toque (o doble clic) para acercar, pellizco para ajustar y
+       arrastre para recorrer la foto.
+
+       Mientras está ampliada se desactiva el deslizar-para-cambiar: si no,
+       mover la foto para mirar una esquina saltaría a la prenda siguiente. */
+    var ZOOM_MAX = 3;
+    var zoomEscala = 1;
+    var zoomX = 0;
+    var zoomY = 0;
+
+    function aplicarZoom() {
+      var ampliada = zoomEscala > 1.01;
+      lightboxImg.style.transform = ampliada
+        ? 'translate(' + zoomX + 'px, ' + zoomY + 'px) scale(' + zoomEscala + ')'
+        : '';
+      lightboxImg.classList.toggle('ampliada', ampliada);
+    }
+
+    function reiniciarZoom() {
+      zoomEscala = 1;
+      zoomX = 0;
+      zoomY = 0;
+      lightboxImg.classList.remove('zoom-directo');
+      aplicarZoom();
+    }
+
+    /* No dejar que la foto se arrastre fuera de su propio marco */
+    function limitarDesplazamiento() {
+      var maxX = Math.max(0, (lightboxImg.offsetWidth * (zoomEscala - 1)) / 2);
+      var maxY = Math.max(0, (lightboxImg.offsetHeight * (zoomEscala - 1)) / 2);
+      zoomX = Math.min(maxX, Math.max(-maxX, zoomX));
+      zoomY = Math.min(maxY, Math.max(-maxY, zoomY));
+    }
+
+    function alternarZoom() {
+      if (zoomEscala > 1.01) {
+        reiniciarZoom();
+      } else {
+        zoomEscala = 2.2;
+        zoomX = 0;
+        zoomY = 0;
+        aplicarZoom();
+      }
+    }
+
+    lightboxImg.addEventListener('dblclick', alternarZoom);
+
+    /* ---------- Gestos táctiles ---------- */
     var toqueInicioX = null;
+    var toqueInicioY = null;
+    var arrastreBaseX = 0;
+    var arrastreBaseY = 0;
+    var pellizcoInicial = 0;
+    var escalaAlEmpezar = 1;
+    var instanteToqueAnterior = 0;
+
+    function distanciaDedos(a, b) {
+      var dx = a.clientX - b.clientX;
+      var dy = a.clientY - b.clientY;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
     lightbox.addEventListener('touchstart', function (e) {
-      toqueInicioX = e.changedTouches[0].clientX;
+      if (e.touches.length === 2) {
+        pellizcoInicial = distanciaDedos(e.touches[0], e.touches[1]);
+        escalaAlEmpezar = zoomEscala;
+        toqueInicioX = null;                  /* dos dedos nunca es un deslizamiento */
+        lightboxImg.classList.add('zoom-directo');
+        return;
+      }
+      toqueInicioX = e.touches[0].clientX;
+      toqueInicioY = e.touches[0].clientY;
+      arrastreBaseX = zoomX;
+      arrastreBaseY = zoomY;
+    }, { passive: true });
+
+    lightbox.addEventListener('touchmove', function (e) {
+      if (e.touches.length === 2 && pellizcoInicial) {
+        var proporcion = distanciaDedos(e.touches[0], e.touches[1]) / pellizcoInicial;
+        zoomEscala = Math.min(ZOOM_MAX, Math.max(1, escalaAlEmpezar * proporcion));
+        limitarDesplazamiento();
+        aplicarZoom();
+        return;
+      }
+
+      if (zoomEscala > 1.01 && toqueInicioX !== null) {
+        lightboxImg.classList.add('zoom-directo');
+        zoomX = arrastreBaseX + (e.touches[0].clientX - toqueInicioX);
+        zoomY = arrastreBaseY + (e.touches[0].clientY - toqueInicioY);
+        limitarDesplazamiento();
+        aplicarZoom();
+      }
     }, { passive: true });
 
     lightbox.addEventListener('touchend', function (e) {
+      lightboxImg.classList.remove('zoom-directo');
+
+      if (pellizcoInicial) {
+        pellizcoInicial = 0;
+        if (zoomEscala <= 1.05) reiniciarZoom();
+        return;
+      }
+
+      var ahora = Date.now();
+      var esDobleToque = (ahora - instanteToqueAnterior) < 300;
+      instanteToqueAnterior = ahora;
+
       if (toqueInicioX === null) return;
+
       var deltaX = e.changedTouches[0].clientX - toqueInicioX;
+      var deltaY = e.changedTouches[0].clientY - toqueInicioY;
+      var casiQuieto = Math.abs(deltaX) < 12 && Math.abs(deltaY) < 12;
       toqueInicioX = null;
+
+      if (esDobleToque && casiQuieto && e.target === lightboxImg) {
+        alternarZoom();
+        return;
+      }
+
+      /* Con la foto ampliada, arrastrar sirve para mirar, no para cambiar */
+      if (zoomEscala > 1.01) return;
       if (grupoActual.length <= 1 || Math.abs(deltaX) < 40) return;
       if (deltaX < 0) siguienteFoto(); else anteriorFoto();
     }, { passive: true });
@@ -411,19 +620,28 @@
      fotos se volvían invisibles al navegar varias veces (glitch de pintado
      del navegador con overflow:hidden + transform + muchas imágenes). Con
      scroll nativo el navegador se encarga de todo, incluido el swipe. */
+  var refrescarCarruseles = [];
+
   document.querySelectorAll('[data-carousel]').forEach(function (carousel) {
     var pista = carousel.querySelector('.carousel-pista');
     var slides = Array.prototype.slice.call(carousel.querySelectorAll('.carousel-slide'));
     var btnPrev = carousel.querySelector('.carousel-flecha-prev');
     var btnNext = carousel.querySelector('.carousel-flecha-next');
     var contadorWrap = carousel.querySelector('.carousel-dots');
-    var indiceActivo = 0;
+    var indiceActivo = -1;
 
     if (!slides.length) return;
 
+    /* Con el filtro de marca puesto, solo cuentan las fotos que quedaron a la vista */
+    function visibles() {
+      return slides.filter(function (slide) { return !slide.hidden; });
+    }
+
     function anchoDesplazamiento() {
+      var primera = visibles()[0];
+      if (!primera) return 0;
       var gap = parseFloat(getComputedStyle(pista).columnGap) || 0;
-      return slides[0].getBoundingClientRect().width + gap;
+      return primera.getBoundingClientRect().width + gap;
     }
 
     /* El índice "activo" se calcula directamente del scroll (no con
@@ -454,10 +672,12 @@
     function pad2(n) { return n < 10 ? '0' + n : String(n); }
 
     function actualizarContador() {
-      var indice = Math.min(slides.length - 1, indiceDesdeScroll());
+      var total = visibles().length;
+      if (!total) return;
+      var indice = Math.min(total - 1, Math.max(0, indiceDesdeScroll()));
       if (indice === indiceActivo) return;
       indiceActivo = indice;
-      if (contadorEl) contadorEl.textContent = pad2(indice + 1) + ' / ' + slides.length;
+      if (contadorEl) contadorEl.textContent = pad2(indice + 1) + ' / ' + total;
     }
 
     function alScrollearCarrusel() {
@@ -469,7 +689,10 @@
       contadorWrap.innerHTML = '';
       contadorEl = document.createElement('span');
       contadorEl.className = 'carousel-contador';
-      contadorEl.textContent = '01 / ' + slides.length;
+      /* Sin fotos a la vista (filtro que no casa con esta categoría) el contador
+         se deja vacío: "01 / 0" no significa nada. La categoría además se oculta. */
+      var total = visibles().length;
+      contadorEl.textContent = total ? '01 / ' + total : '';
       contadorWrap.appendChild(contadorEl);
     }
 
@@ -489,7 +712,235 @@
 
     window.addEventListener('resize', actualizarFlechas);
 
+    /* El filtro de marca oculta fotos: hay que volver al inicio del carrusel y
+       recalcular, o el contador seguiría contando fotos que ya no se ven. */
+    refrescarCarruseles.push(function () {
+      pista.scrollLeft = 0;
+      indiceActivo = -1;
+      crearContador();
+      actualizarContador();
+      actualizarFlechas();
+    });
+
     crearContador();
     actualizarFlechas();
   });
+
+  /* ---------- Filtro por marca del catálogo ----------
+     Las marcas salen del data-marca de cada foto. Solo se muestran las que
+     tienen 2 o más fotos: un chip que devuelve una sola prenda no ayuda a
+     buscar y solo llena la fila de ruido. */
+  var zonaMarcas = document.getElementById('filtroMarcas');
+  var listaMarcas = document.getElementById('filtroMarcasLista');
+  var fotosConMarca = Array.prototype.slice.call(document.querySelectorAll('.cat-foto[data-marca]'));
+
+  if (zonaMarcas && listaMarcas && fotosConMarca.length) {
+    var conteoMarcas = {};
+
+    fotosConMarca.forEach(function (foto) {
+      foto.getAttribute('data-marca').split('|').forEach(function (marca) {
+        if (marca) conteoMarcas[marca] = (conteoMarcas[marca] || 0) + 1;
+      });
+    });
+
+    var marcasListadas = Object.keys(conteoMarcas)
+      .filter(function (marca) { return conteoMarcas[marca] >= 2; })
+      .sort(function (a, b) {
+        return conteoMarcas[b] - conteoMarcas[a] || a.localeCompare(b, 'es');
+      });
+
+    if (marcasListadas.length) {
+      var crearChip = function (marca, etiqueta, cantidad) {
+        var chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'cat-marca';
+        chip.setAttribute('data-marca', marca);
+        chip.setAttribute('aria-pressed', 'false');
+        chip.appendChild(document.createTextNode(etiqueta));
+
+        var numero = document.createElement('span');
+        numero.className = 'cat-marca-cantidad';
+        numero.textContent = String(cantidad);
+        chip.appendChild(numero);
+
+        listaMarcas.appendChild(chip);
+      };
+
+      var aplicarFiltro = function (marca) {
+        fotosConMarca.forEach(function (foto) {
+          var slide = foto.closest('.carousel-slide');
+          if (!slide) return;
+          var suyas = foto.getAttribute('data-marca').split('|');
+          slide.hidden = marca !== '' && suyas.indexOf(marca) === -1;
+        });
+
+        /* Las categorías que se quedan sin fotos desaparecen mientras dure el
+           filtro — incluida Conjuntos, que todavía no tiene ninguna — y con
+           ellas su atajo de la fila de arriba, que si no llevaría a la nada. */
+        document.querySelectorAll('.cat-categoria').forEach(function (categoria) {
+          var quedaAlguna = categoria.querySelector('.carousel-slide:not([hidden])');
+          categoria.hidden = marca !== '' && !quedaAlguna;
+
+          /* La cabecera no puede seguir diciendo "10 modelos disponibles" cuando el
+             filtro dejó 3 a la vista. Se guarda el texto original la primera vez y
+             se restaura al quitar el filtro. Conjuntos se salta: ahí ese hueco lleva
+             la etiqueta "Próximamente", no un número. */
+          var rotulo = categoria.querySelector('.cat-categoria-cantidad');
+          var totales = categoria.querySelectorAll('.carousel-slide').length;
+          if (rotulo && totales) {
+            if (!rotulo.getAttribute('data-texto-original')) {
+              rotulo.setAttribute('data-texto-original', rotulo.textContent);
+            }
+            var aLaVista = categoria.querySelectorAll('.carousel-slide:not([hidden])').length;
+            rotulo.textContent = marca === ''
+              ? rotulo.getAttribute('data-texto-original')
+              : aLaVista + ' de ' + totales + (totales === 1 ? ' modelo' : ' modelos');
+          }
+
+          var id = categoria.getAttribute('id');
+          var atajo = id ? document.querySelector('.cat-filtro[href="#' + id + '"]') : null;
+          if (atajo) atajo.hidden = categoria.hidden;
+        });
+
+        refrescarCarruseles.forEach(function (refrescar) { refrescar(); });
+
+        listaMarcas.querySelectorAll('.cat-marca').forEach(function (chip) {
+          var activa = chip.getAttribute('data-marca') === marca;
+          chip.classList.toggle('activa', activa);
+          chip.setAttribute('aria-pressed', activa ? 'true' : 'false');
+        });
+      };
+
+      zonaMarcas.hidden = false;
+      crearChip('', 'Todas', fotosConMarca.length);
+      marcasListadas.forEach(function (marca) {
+        crearChip(marca, marca, conteoMarcas[marca]);
+      });
+
+      listaMarcas.addEventListener('click', function (e) {
+        var chip = e.target.closest('.cat-marca');
+        if (chip) aplicarFiltro(chip.getAttribute('data-marca'));
+      });
+
+      aplicarFiltro('');
+    }
+  }
+
+  /* ---------- Selección múltiple: varias prendas en un solo mensaje ----------
+     Antes cada foto abría su propio chat: pedir tres prendas eran tres
+     conversaciones sueltas y la tienda tenía que juntarlas a mano. */
+  var barraSeleccion = document.getElementById('seleccionBarra');
+
+  if (barraSeleccion) {
+    var seleccionCantidad = document.getElementById('seleccionCantidad');
+    var seleccionPalabra = document.getElementById('seleccionPalabra');
+    var seleccionEnviar = document.getElementById('seleccionEnviar');
+    var seleccionLimpiar = document.getElementById('seleccionLimpiar');
+
+    var LLAVE_SELECCION = 'presencia-seleccion';
+    var elegidas = [];
+    var fotoPorId = {};
+
+    Array.prototype.slice.call(document.querySelectorAll('.cat-foto')).forEach(function (foto) {
+      fotoPorId[datosDeFoto(foto).id] = foto;
+    });
+
+    /* localStorage puede fallar (ventana privada, almacenamiento bloqueado): si no
+       está disponible la selección sigue funcionando, solo que no sobrevive a una
+       recarga. Nunca debe tumbar la página. */
+    function leerSeleccionGuardada() {
+      try {
+        var crudo = window.localStorage.getItem(LLAVE_SELECCION);
+        var lista = crudo ? JSON.parse(crudo) : [];
+        return Object.prototype.toString.call(lista) === '[object Array]' ? lista : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function guardarSeleccion() {
+      try {
+        window.localStorage.setItem(LLAVE_SELECCION, JSON.stringify(elegidas));
+      } catch (e) { /* sin almacenamiento: no pasa nada */ }
+    }
+
+    function marcarBoton(foto, activa) {
+      var slide = foto.closest('.carousel-slide');
+      var boton = slide ? slide.querySelector('.cat-anadir') : null;
+      if (!boton) return;
+      var datos = datosDeFoto(foto);
+      boton.classList.toggle('elegido', activa);
+      boton.setAttribute('aria-pressed', activa ? 'true' : 'false');
+      boton.setAttribute('aria-label',
+        (activa ? 'Quitar de mi selección: ' : 'Añadir a mi selección: ') + datos.etiqueta);
+    }
+
+    function mensajeDelPedido() {
+      var lineas = [];
+      elegidas.forEach(function (id) {
+        var foto = fotoPorId[id];
+        if (!foto) return;
+        var datos = datosDeFoto(foto);
+        lineas.push(datos.esEstante
+          ? '• Una gorra de la foto #' + datos.numero
+          : '• ' + datos.etiqueta + ' (foto ' + datos.numero + ')');
+      });
+      return 'Hola, me interesan estas prendas que vi en la página de PRESENCIA:\n' + lineas.join('\n');
+    }
+
+    function pintarSeleccion() {
+      var total = elegidas.length;
+      barraSeleccion.hidden = total === 0;
+      document.body.classList.toggle('con-seleccion', total > 0);
+      seleccionCantidad.textContent = String(total);
+      seleccionPalabra.textContent = total === 1 ? 'prenda seleccionada' : 'prendas seleccionadas';
+      if (total) {
+        seleccionEnviar.href = 'https://wa.me/' + numeroWhatsApp + '?text=' +
+          encodeURIComponent(mensajeDelPedido());
+      }
+    }
+
+    function alternarFoto(foto) {
+      var id = datosDeFoto(foto).id;
+      var posicion = elegidas.indexOf(id);
+      var activa = posicion === -1;
+      if (activa) elegidas.push(id); else elegidas.splice(posicion, 1);
+      marcarBoton(foto, activa);
+      guardarSeleccion();
+      pintarSeleccion();
+    }
+
+    function vaciarSeleccion() {
+      elegidas.forEach(function (id) {
+        if (fotoPorId[id]) marcarBoton(fotoPorId[id], false);
+      });
+      elegidas = [];
+      guardarSeleccion();
+      pintarSeleccion();
+    }
+
+    /* Delegado: los botones "+" son 65 y así no se cuelgan 65 escuchadores */
+    document.addEventListener('click', function (e) {
+      var boton = e.target.closest ? e.target.closest('.cat-anadir') : null;
+      if (!boton) return;
+      var slide = boton.closest('.carousel-slide');
+      var foto = slide ? slide.querySelector('.cat-foto') : null;
+      if (foto) alternarFoto(foto);
+    });
+
+    seleccionLimpiar.addEventListener('click', vaciarSeleccion);
+
+    /* Al enviar se vacía: el pedido ya viajó al chat y dejarlo marcado haría que
+       el siguiente mensaje repitiera prendas ya pedidas. Se hace en un setTimeout
+       para no interferir con la apertura del enlace. */
+    seleccionEnviar.addEventListener('click', function () {
+      window.setTimeout(vaciarSeleccion, 0);
+    });
+
+    /* Restaurar lo elegido antes de recargar, descartando ids que ya no existen
+       (por ejemplo si se retiró una foto del catálogo) */
+    elegidas = leerSeleccionGuardada().filter(function (id) { return !!fotoPorId[id]; });
+    elegidas.forEach(function (id) { marcarBoton(fotoPorId[id], true); });
+    pintarSeleccion();
+  }
 })();

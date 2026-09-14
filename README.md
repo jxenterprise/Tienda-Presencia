@@ -30,6 +30,22 @@ Diseño y desarrollo: **JX Company**.
   bloquear el render, JS con `defer`.
 - Accesibilidad: HTML semántico, un solo `h1`, menú accesible con teclado,
   `prefers-reduced-motion`, áreas táctiles ≥48px, safe-areas de iPhone.
+- **Filtro por marca**: chips que filtran el catálogo en vivo (Tommy Hilfiger, Nike,
+  MLB, Nautica, Hugo Boss, Adidas, Columbia, Jordan, Lacoste, Tommy Jeans, Undergold).
+  Las marcas salen del atributo `data-marca` de cada foto y solo se listan las que
+  tienen 2 o más fotos. Al filtrar se ajustan los contadores de cada carrusel y la
+  cabecera de cada categoría ("3 de 10 modelos"), y las categorías sin coincidencias
+  se ocultan junto con su atajo.
+- **Pedido múltiple**: botón "＋" en cada foto y barra flotante que arma **un solo**
+  mensaje de WhatsApp con todas las prendas elegidas. La selección sobrevive a una
+  recarga (`localStorage`) y se vacía sola al enviar.
+- **Zoom en la foto ampliada**: doble toque o doble clic para acercar, pellizco para
+  ajustar y arrastre para recorrerla. Mientras está ampliada se desactiva el
+  deslizar-para-cambiar, que si no saltaría de prenda al mirar una esquina.
+- **Preguntas frecuentes** con acordeón nativo (`<details>`) y datos estructurados
+  `FAQPage`, para que Google pueda mostrarlas desplegadas en los resultados.
+- Botón "volver arriba", sección activa resaltada en el menú y aparición escalonada
+  de las fotos de cada categoría.
 - Sin frameworks: HTML + CSS + JavaScript puros. Cero dependencias, cero build.
 
 ## Estructura del proyecto
@@ -115,6 +131,29 @@ quiera, no es urgente.
    que más ayuda a aparecer en el mapa/búsquedas locales tipo "tienda de ropa en cartagena". Ver
    la checklist completa en `CLAUDE.md`, sección "SEO y descubribilidad en Google".
 
+## Pendientes y tareas con fecha
+
+### ⏰ 1 de noviembre de 2026 — vence la promoción de domicilios
+
+El cintillo del inicio dice **"Hasta el 31 de octubre"** y la pregunta frecuente
+"¿Hacen domicilios en Cartagena?" repite esa fecha. **El 1 de noviembre hay que
+renovarla o quitarla en los dos sitios** (`index.html`: `.hero-envio-tag`, la sección
+`#preguntas` y el bloque `FAQPage` del JSON-LD). Si no, la página queda prometiendo
+algo que dejó de ser cierto — que es justo lo que pasó con el letrero anterior,
+"Oferta por tiempo limitado", que estuvo un mes sin vencer nunca.
+
+### Reseñas de clientes
+
+La sección `#resenas` está construida pero **vacía a propósito**. Faltan testimonios
+reales de la tienda. No se inventan reseñas: publicar opiniones falsas engaña al
+comprador y Google penaliza el marcado `Review` fraudulento. Cuando lleguen los
+testimonios de verdad, se sustituye el aviso por tarjetas `.resena-card` y recién ahí
+se añade el marcado correspondiente.
+
+### Categoría Conjuntos
+
+Sigue como "Próximamente", esperando las fotos.
+
 ## Cómo editar contenidos
 
 | Quiero cambiar… | Voy a… |
@@ -125,6 +164,11 @@ quiera, no es urgente.
 | Dirección y horario | `index.html` → sección `#ubicacion` (y JSON-LD del `<head>`) |
 | Colores o tipografías | `css/styles.css` → bloque `:root` |
 | Imágenes | Carpeta `img/` (subcarpetas en minúsculas, ver `CLAUDE.md`) |
+| Marcas del filtro | `index.html` → atributo `data-marca="Marca1\|Marca2"` de cada `.cat-foto`. Los chips se generan solos; solo aparecen las marcas con 2+ fotos |
+| Preguntas frecuentes | `index.html` → sección `#preguntas` **y** el bloque `FAQPage` del JSON-LD en el `<head>`. **Los dos textos tienen que ser idénticos**: si no coinciden, Google penaliza el marcado |
+| Reseñas de clientes | `index.html` → sección `#resenas`. Hoy está vacía y marcada como pendiente; ver "Pendientes" abajo |
+| Fecha del catálogo | `index.html` → `.cat-actualizado`. **Es texto manual**: hay que cambiarlo al subir fotos nuevas |
+| Etiqueta "Nuevo" en una foto | Añadir `<span class="cat-nuevo">Nuevo</span>` dentro del botón `.cat-foto`. El estilo ya existe; ahora mismo no hay ninguna puesta |
 
 Los datos que aún no están confirmados por la tienda aparecen marcados en la página
 como `{POR CONFIRMAR}` — la lista completa está en `CLAUDE.md`.

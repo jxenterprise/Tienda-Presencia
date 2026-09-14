@@ -55,6 +55,11 @@ body {
 
 img, svg { display: block; max-width: 100%; height: auto; }
 
+/* El atributo hidden tiene que ganarle a cualquier display propio: varios
+   elementos que el JS oculta (chips de categoría, botones) traen su propio
+   display:inline-flex/grid, que si no lo dejaría visible igual. */
+[hidden] { display: none !important; }
+
 a { color: var(--dorado-claro); text-decoration: none; }
 
 ul { list-style: none; }
@@ -119,6 +124,16 @@ body.scroll-bloqueado {
 .seccion-intro {
   margin-top: 1rem;
   color: var(--gris-texto);
+}
+
+/* Fecha de la última actualización del catálogo. OJO: es texto manual —
+   hay que cambiarlo en index.html cada vez que se suban fotos nuevas. */
+.cat-actualizado {
+  margin-top: .55rem;
+  font-size: .82rem;
+  letter-spacing: .04em;
+  color: var(--dorado-suave);
+  opacity: .85;
 }
 
 /* Marcador de datos pendientes (workflow JX Company) */
@@ -330,6 +345,9 @@ body.scroll-bloqueado {
   border-bottom: 1px solid rgba(212, 160, 23, .12);
   transition: color var(--transicion), padding-left var(--transicion);
 }
+
+/* Sección en la que está el visitante ahora mismo */
+.nav-link.activo { color: var(--dorado-claro); }
 
 .btn-nav { margin-top: 1rem; }
 
@@ -749,9 +767,49 @@ body.scroll-bloqueado {
 .carousel-pista::-webkit-scrollbar { display: none; }
 
 .carousel-slide {
+  position: relative;           /* ancla del botón "añadir", que va superpuesto */
   flex: 0 0 calc(50% - .4rem);
   min-width: 0;
   scroll-snap-align: start;
+}
+
+/* Botón "añadir a mi selección". Va como hermano de .cat-foto, no dentro:
+   .cat-foto ya es un <button> y anidar botones es HTML inválido. Ocupa la
+   esquina opuesta al numerito para no taparlo. */
+.cat-anadir {
+  position: absolute;
+  top: .45rem;
+  right: .45rem;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(212, 160, 23, .55);
+  border-radius: 50%;
+  background: rgba(13, 11, 8, .72);
+  color: var(--dorado-claro);
+  cursor: pointer;
+  transition: background var(--transicion), color var(--transicion), transform var(--transicion);
+}
+
+.cat-anadir svg { width: 18px; height: 18px; }
+
+.cat-anadir-ok { display: none; }
+
+.cat-anadir.elegido {
+  background: var(--grad-oro-btn);
+  border-color: transparent;
+  color: var(--negro);
+}
+
+.cat-anadir.elegido .cat-anadir-mas { display: none; }
+.cat-anadir.elegido .cat-anadir-ok { display: block; }
+
+/* La foto elegida se marca también con el borde, para verlo de un vistazo */
+.carousel-slide:has(.cat-anadir.elegido) .cat-foto {
+  border-color: var(--dorado);
+  box-shadow: 0 0 0 2px rgba(212, 160, 23, .35);
 }
 
 .carousel-slide .cat-foto { width: 100%; aspect-ratio: 3 / 4; }
@@ -923,6 +981,20 @@ body.scroll-bloqueado {
   opacity: 0;
   transform: scale(.96);
 }
+
+/* ---------- Zoom de la foto ampliada ----------
+   touch-action:none para que el navegador no se quede con el pellizco: lo
+   gestiona el JS. El scroll de la página ya está bloqueado con el lightbox
+   abierto, así que no se pierde nada. */
+.lightbox-figura img {
+  touch-action: none;
+}
+
+.lightbox-figura img.ampliada { cursor: zoom-out; }
+
+/* Mientras se pellizca o se arrastra no debe haber transición: con ella el
+   gesto se sentiría pegajoso, siempre un paso por detrás del dedo. */
+.lightbox-figura img.zoom-directo { transition: none; }
 
 .lightbox-figura figcaption {
   font-family: var(--fuente-titulo);
@@ -1117,6 +1189,173 @@ body.scroll-bloqueado {
 }
 
 .confianza-card p { font-size: .9rem; color: var(--gris-texto); }
+
+/* ---------- Filtro por marca del catálogo ---------- */
+.cat-marcas {
+  margin-top: 1.1rem;
+  text-align: center;
+}
+
+.cat-marcas-titulo {
+  display: block;
+  margin-bottom: .6rem;
+  font-size: .78rem;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--dorado-suave);
+}
+
+.cat-marcas-lista {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: .45rem;
+}
+
+.cat-marca {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  min-height: 40px;
+  padding: .35rem .8rem;
+  border: 1px solid rgba(212, 160, 23, .35);
+  border-radius: 999px;
+  background: rgba(13, 11, 8, .55);
+  color: var(--crema);
+  font-size: .82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color var(--transicion), border-color var(--transicion), background var(--transicion);
+}
+
+.cat-marca-cantidad {
+  font-size: .72rem;
+  color: var(--dorado-suave);
+  font-variant-numeric: tabular-nums;
+}
+
+.cat-marca.activa {
+  background: var(--grad-oro-btn);
+  border-color: transparent;
+  color: var(--negro);
+}
+
+.cat-marca.activa .cat-marca-cantidad { color: rgba(13, 11, 8, .7); }
+
+/* ---------- RESEÑAS DE CLIENTES ---------- */
+.resenas {
+  padding-block: clamp(3.2rem, 8vw, 5rem);
+  background: var(--negro-2);
+}
+
+.resenas-pendiente {
+  max-width: 58ch;
+  margin: 1.6rem auto 0;
+  padding: 1.4rem 1.3rem;
+  border: 1px dashed rgba(212, 160, 23, .45);
+  border-radius: var(--radio);
+  background: rgba(212, 160, 23, .05);
+  color: var(--gris-texto);
+  text-align: center;
+  font-size: .96rem;
+}
+
+.resenas-pendiente .pendiente { margin-right: .4rem; }
+
+/* Tarjetas para cuando lleguen los testimonios reales */
+.resenas-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-top: 1.8rem;
+}
+
+.resena-card {
+  padding: 1.4rem 1.3rem;
+  border: 1px solid rgba(212, 160, 23, .25);
+  border-radius: var(--radio);
+  background: var(--carbon);
+}
+
+.resena-texto { color: var(--crema); font-style: italic; }
+
+.resena-autor {
+  margin-top: .8rem;
+  font-weight: 700;
+  font-size: .9rem;
+  letter-spacing: .04em;
+  color: var(--dorado-claro);
+}
+
+/* ---------- PREGUNTAS FRECUENTES ---------- */
+.faq {
+  padding-block: clamp(3.2rem, 8vw, 5rem);
+  background: var(--negro);
+}
+
+.faq-lista {
+  max-width: 68ch;
+  margin: 2rem auto 0;
+  display: grid;
+  gap: .7rem;
+}
+
+.faq-item {
+  border: 1px solid rgba(212, 160, 23, .28);
+  border-radius: var(--radio);
+  background: var(--carbon);
+  overflow: hidden;
+}
+
+.faq-item[open] { border-color: rgba(212, 160, 23, .55); }
+
+.faq-pregunta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 56px;
+  padding: .9rem 1.1rem;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--crema);
+  list-style: none;                 /* Firefox */
+  transition: color var(--transicion);
+}
+
+.faq-pregunta::-webkit-details-marker { display: none; }   /* Safari/Chrome */
+
+.faq-item[open] .faq-pregunta { color: var(--dorado-claro); }
+
+/* Signo +/− dibujado con CSS: dos trazos, el vertical gira al abrir */
+.faq-signo {
+  position: relative;
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
+.faq-signo::before,
+.faq-signo::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--dorado);
+  transform: translateY(-50%);
+  transition: transform var(--transicion);
+}
+
+.faq-signo::after { transform: translateY(-50%) rotate(90deg); }
+
+.faq-item[open] .faq-signo::after { transform: translateY(-50%) rotate(0deg); }
+
+.faq-respuesta {
+  padding: 0 1.1rem 1.1rem;
+  color: var(--gris-texto);
+  font-size: .97rem;
+}
 
 /* ---------- UBICACIÓN ---------- */
 .ubicacion {
@@ -1320,6 +1559,101 @@ body.scroll-bloqueado {
 
 .credito strong { color: var(--dorado-claro); letter-spacing: .04em; }
 
+/* ---------- Barra de selección múltiple ---------- */
+.seleccion-barra {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 75;
+  padding: .7rem 0 calc(.7rem + env(safe-area-inset-bottom));
+  border-top: 1px solid rgba(212, 160, 23, .4);
+  background: rgba(13, 11, 8, .96);
+  box-shadow: 0 -10px 28px rgba(0, 0, 0, .5);
+}
+
+.seleccion-caja {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: .6rem 1rem;
+}
+
+.seleccion-texto {
+  font-size: .9rem;
+  color: var(--crema);
+}
+
+.seleccion-texto strong {
+  color: var(--dorado-claro);
+  font-size: 1.05rem;
+}
+
+.seleccion-acciones {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+  margin-left: auto;
+}
+
+.seleccion-limpiar {
+  min-height: 44px;
+  padding: .4rem .7rem;
+  background: none;
+  border: 0;
+  color: var(--gris-texto);
+  font-size: .86rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.seleccion-enviar {
+  min-height: 46px;
+  padding: .6rem 1.1rem;
+  font-size: .9rem;
+}
+
+/* Con la barra abierta, los flotantes suben para no quedar debajo de ella */
+/* Espacio al final para que la barra no tape el cierre del footer */
+body.con-seleccion { padding-bottom: 84px; }
+
+body.con-seleccion .wa-flotante {
+  bottom: calc(1.1rem + 84px + env(safe-area-inset-bottom));
+}
+
+body.con-seleccion .ir-arriba {
+  bottom: calc(1.1rem + 84px + 58px + .7rem + env(safe-area-inset-bottom));
+}
+
+/* ---------- Botón "volver arriba" ----------
+   Va justo encima del flotante de WhatsApp (58px de alto + separación), respetando
+   las safe-areas del iPhone igual que aquel. */
+.ir-arriba {
+  position: fixed;
+  z-index: 69;
+  right: calc(1rem + env(safe-area-inset-right));
+  bottom: calc(1.1rem + 58px + .7rem + env(safe-area-inset-bottom));
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(212, 160, 23, .5);
+  border-radius: 50%;
+  background: rgba(13, 11, 8, .82);
+  color: var(--dorado-claro);
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .45);
+  transition: opacity var(--transicion), transform var(--transicion), background var(--transicion);
+}
+
+.ir-arriba svg { width: 22px; height: 22px; }
+
+/* Entra y sale con un pequeño desvanecido en vez de aparecer de golpe */
+.ir-arriba[hidden] { display: none; }
+
+.ir-arriba.entrando { opacity: 0; transform: translateY(8px); }
+
 /* ---------- Botón flotante de WhatsApp ---------- */
 .wa-flotante {
   position: fixed;
@@ -1354,6 +1688,20 @@ body.scroll-bloqueado {
 }
 
 .js .reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Las fotos de cada categoría entran una detrás de otra, no todas de golpe.
+   El orden lo pone el JS en --orden (solo a las primeras, que son las visibles). */
+.js .cat-categoria .carousel-slide {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity .5s ease, transform .5s ease;
+  transition-delay: calc(var(--orden, 0) * 70ms);
+}
+
+.js .cat-categoria.visible .carousel-slide {
   opacity: 1;
   transform: none;
 }
@@ -1403,6 +1751,7 @@ body.scroll-bloqueado {
   .btn { width: auto; }
 
   .confianza-grid { grid-template-columns: repeat(3, 1fr); }
+  .resenas-grid { grid-template-columns: repeat(2, 1fr); }
 
   .ubicacion-grid { grid-template-columns: repeat(2, 1fr); }
   .ubicacion-grid .info-card:last-child { grid-column: 1 / -1; }
@@ -1419,6 +1768,7 @@ body.scroll-bloqueado {
     gap: .5rem 2.5rem;
   }
   .ubicacion-grid { grid-template-columns: repeat(3, 1fr); }
+  .resenas-grid { grid-template-columns: repeat(3, 1fr); }
   .ubicacion-grid .info-card:last-child { grid-column: auto; }
 }
 
@@ -1549,5 +1899,7 @@ body.scroll-bloqueado {
     transition-duration: .01ms !important;
   }
   .js .reveal { opacity: 1; transform: none; }
+  .js .cat-categoria .carousel-slide { opacity: 1; transform: none; transition-delay: 0s; }
+  .ir-arriba.entrando { opacity: 1; transform: none; }
   .wa-flotante { animation: none; }
 }
