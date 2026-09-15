@@ -56,8 +56,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Great+Vibes&family=Montserrat:wght@400;500;600;700&display=swap">
   </noscript>
 
-  <link rel="stylesheet" href="css/styles.css?v=13">
-  <script src="js/script.js?v=13" defer></script>
+  <link rel="stylesheet" href="css/styles.css?v=15">
+  <script src="js/script.js?v=15" defer></script>
 
   <!-- ============ JSON-LD (datos estructurados) ============ -->
   <script type="application/ld+json">
@@ -104,6 +104,60 @@
           "https://www.facebook.com/profile.php?id=61591960711304",
           "https://www.tiktok.com/@presenciamodacartagena"
         ]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://presenciamodactg.com/#preguntas",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "¿Cuánto cuestan las prendas?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Los precios no se publican en la página porque cambian según el modelo y la disponibilidad. Escríbenos por WhatsApp con la foto que te gustó y te decimos el precio al momento."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Qué tallas tienen disponibles?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Depende del modelo. Escríbenos por WhatsApp indicando la foto que te interesa y te confirmamos qué tallas hay en ese momento."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Hacen domicilios en Cartagena?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí. Los domicilios son gratis en toda Cartagena hasta el 31 de octubre de 2026."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Envían fuera de Cartagena?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Sí, hacemos envíos a otras ciudades. El costo y el tiempo de entrega se acuerdan por WhatsApp según el destino."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Cómo puedo pagar?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Aceptamos efectivo, Nequi, Daviplata y transferencia bancaria."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "¿Dónde están y en qué horario atienden?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Estamos en Mz S Lote 11, Cl 10B, barrio Nuevo Campestre, Cartagena de Indias. Atendemos todos los días de 8:00 a. m. a 7:00 p. m."
+            }
+          }
+        ]
       }
     ]
   }
@@ -116,7 +170,7 @@
   <header class="header" id="header">
     <div class="contenedor nav-wrap">
       <a href="#inicio" class="marca" aria-label="PRESENCIA Tienda de Ropa — Inicio">
-        <img src="img/logos/favicon.png" alt="Insignia dorada de PRESENCIA" class="marca-icono" width="44" height="44" loading="lazy" decoding="async">
+        <img src="img/logos/favicon.png" alt="Insignia dorada de PRESENCIA" class="marca-icono" width="44" height="44" decoding="async">
         <span class="marca-texto">PRESENCIA<small>Tienda de Ropa</small></span>
       </a>
 
@@ -191,7 +245,7 @@
             </svg>
             <span>Domicilios <strong>GRATIS</strong> en toda Cartagena</span>
           </p>
-          <span class="hero-envio-tag">Oferta por tiempo limitado</span>
+          <span class="hero-envio-tag">Hasta el 31 de octubre</span>
         </div>
       </div>
       <div class="hero-borde-oro" aria-hidden="true"></div>
@@ -204,6 +258,7 @@
           <p class="script-oro">Lo que encuentras en Presencia</p>
           <h2 class="titulo-seccion">Nuestro Catálogo</h2>
           <p class="seccion-intro">Moda con estilo para estrenar en Cartagena. Toca cualquier foto para verla en grande y pregunta por tu talla.</p>
+          <p class="cat-actualizado">Catálogo actualizado el <time datetime="2026-09-14">14 de septiembre de 2026</time></p>
         </header>
 
         <div class="cat-filtros reveal" aria-label="Ir directo a una categoría">
@@ -212,6 +267,13 @@
           <a href="#cat-gorras" class="cat-filtro">Gorras</a>
           <a href="#cat-pantalonetas" class="cat-filtro">Pantalonetas</a>
           <a href="#cat-conjuntos" class="cat-filtro">Conjuntos</a>
+        </div>
+
+        <!-- Filtro por marca. Lo rellena el JS a partir de los data-marca de cada
+             foto, y por eso arranca oculto: sin JS no habría nada que filtrar. -->
+        <div class="cat-marcas reveal" id="filtroMarcas" hidden>
+          <span class="cat-marcas-titulo">Filtrar por marca</span>
+          <div class="cat-marcas-lista" id="filtroMarcasLista" role="group" aria-label="Filtrar el catálogo por marca"></div>
         </div>
 
         <div class="cat-categoria reveal" id="cat-buzos" data-categoria="Buzos">
@@ -229,63 +291,103 @@
           <div class="carousel" data-carousel>
             <div class="carousel-pista" tabindex="0" aria-label="Fotos de buzos, desliza o usa las flechas para ver más">
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanco Tommy Hilfiger, franja roja y azul">
-                  <img src="img/buzos/buzo-01.webp" alt="Buzo modelo 01 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanco Tommy Hilfiger, franja roja y azul" data-marca="Tommy Hilfiger">
+                  <img src="img/buzos/buzo-01.webp" alt="Buzo blanco Tommy Hilfiger, franja roja y azul, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">01</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="beige Tommy Hilfiger, hombros azul marino">
-                  <img src="img/buzos/buzo-02.webp" alt="Buzo modelo 02 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="beige Tommy Hilfiger, hombros azul marino" data-marca="Tommy Hilfiger">
+                  <img src="img/buzos/buzo-02.webp" alt="Buzo beige Tommy Hilfiger, hombros azul marino, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">02</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul marino Tommy Hilfiger, franja blanca y roja">
-                  <img src="img/buzos/buzo-03.webp" alt="Buzo modelo 03 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul marino Tommy Hilfiger, franja blanca y roja" data-marca="Tommy Hilfiger">
+                  <img src="img/buzos/buzo-03.webp" alt="Buzo azul marino Tommy Hilfiger, franja blanca y roja, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">03</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="gris jaspeado Tommy Hilfiger, hombros azul marino">
-                  <img src="img/buzos/buzo-04.webp" alt="Buzo modelo 04 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="gris jaspeado Tommy Hilfiger, hombros azul marino" data-marca="Tommy Hilfiger">
+                  <img src="img/buzos/buzo-04.webp" alt="Buzo gris jaspeado Tommy Hilfiger, hombros azul marino, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">04</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="crema Karl Lagerfeld">
-                  <img src="img/buzos/buzo-05.webp" alt="Buzo modelo 05 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="crema Karl Lagerfeld" data-marca="Karl Lagerfeld">
+                  <img src="img/buzos/buzo-05.webp" alt="Buzo crema Karl Lagerfeld, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">05</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul marino Lacoste, franja azul rey">
-                  <img src="img/buzos/buzo-06.webp" alt="Buzo modelo 06 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul marino Lacoste, franja azul rey" data-marca="Lacoste">
+                  <img src="img/buzos/buzo-06.webp" alt="Buzo azul marino Lacoste, franja azul rey, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">06</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="verde militar Lacoste, franja azul marino">
-                  <img src="img/buzos/buzo-07.webp" alt="Buzo modelo 07 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="verde militar Lacoste, franja azul marino" data-marca="Lacoste">
+                  <img src="img/buzos/buzo-07.webp" alt="Buzo verde militar Lacoste, franja azul marino, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">07</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="verde caqui Tommy Hilfiger, franja roja">
-                  <img src="img/buzos/buzo-08.webp" alt="Buzo modelo 08 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="verde caqui Tommy Hilfiger, franja roja" data-marca="Tommy Hilfiger">
+                  <img src="img/buzos/buzo-08.webp" alt="Buzo verde caqui Tommy Hilfiger, franja roja, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">08</span>
                 </button>
-              </div>
-              <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanco Lacoste, franja azul y dorada">
-                  <img src="img/buzos/buzo-09.webp" alt="Buzo modelo 09 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
-                  <span class="cat-numero">09</span>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul marino Tommy Hilfiger, hombros rojos">
-                  <img src="img/buzos/buzo-10.webp" alt="Buzo modelo 10 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanco Lacoste, franja azul y dorada" data-marca="Lacoste">
+                  <img src="img/buzos/buzo-09.webp" alt="Buzo blanco Lacoste, franja azul y dorada, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                  <span class="cat-numero">09</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div class="carousel-slide">
+                <button type="button" class="cat-foto" data-descripcion="azul marino Tommy Hilfiger, hombros rojos" data-marca="Tommy Hilfiger">
+                  <img src="img/buzos/buzo-10.webp" alt="Buzo azul marino Tommy Hilfiger, hombros rojos, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">10</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -295,7 +397,7 @@
             <button type="button" class="carousel-flecha carousel-flecha-next" aria-label="Foto siguiente">
               <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="carousel-dots" role="tablist" aria-label="Navegación del carrusel de buzos"></div>
+            <div class="carousel-dots" aria-live="polite" aria-label="Foto actual del carrusel de buzos"></div>
           </div>
         </div>
 
@@ -314,57 +416,93 @@
           <div class="carousel" data-carousel>
             <div class="carousel-pista" tabindex="0" aria-label="Fotos de camisetas, desliza o usa las flechas para ver más">
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Nike Jordan 23 firma — negro, blanco o beige">
-                  <img src="img/camisetas/camiseta-01.webp" alt="Camiseta modelo 01 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Nike Jordan 23 firma — negro, blanco o beige" data-marca="Nike|Jordan">
+                  <img src="img/camisetas/camiseta-01.webp" alt="Camiseta Nike Jordan 23 firma — negro, blanco o beige, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">01</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Adidas logo grande — negro o blanco">
-                  <img src="img/camisetas/camiseta-02.webp" alt="Camiseta modelo 02 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Adidas logo grande — negro o blanco" data-marca="Adidas">
+                  <img src="img/camisetas/camiseta-02.webp" alt="Camiseta Adidas logo grande — negro o blanco, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">02</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Nike Jordan 23 negra o Jordan Quality Basketball blanca">
-                  <img src="img/camisetas/camiseta-03.webp" alt="Camiseta modelo 03 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Nike Jordan 23 negra o Jordan Quality Basketball blanca" data-marca="Nike|Jordan">
+                  <img src="img/camisetas/camiseta-03.webp" alt="Camiseta Nike Jordan 23 negra o Jordan Quality Basketball blanca, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">03</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Adidas Training — negro, blanco o beige">
-                  <img src="img/camisetas/camiseta-04.webp" alt="Camiseta modelo 04 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Adidas Training — negro, blanco o beige" data-marca="Adidas">
+                  <img src="img/camisetas/camiseta-04.webp" alt="Camiseta Adidas Training — negro, blanco o beige, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">04</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Undergold 369 — negro o blanco">
-                  <img src="img/camisetas/camiseta-05.webp" alt="Camiseta modelo 05 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Undergold 369 — negro o blanco" data-marca="Undergold">
+                  <img src="img/camisetas/camiseta-05.webp" alt="Camiseta Undergold 369 — negro o blanco, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">05</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Undergold UNDGLD — negro, blanco o beige">
-                  <img src="img/camisetas/camiseta-06.webp" alt="Camiseta modelo 06 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Undergold UNDGLD — negro, blanco o beige" data-marca="Undergold">
+                  <img src="img/camisetas/camiseta-06.webp" alt="Camiseta Undergold UNDGLD — negro, blanco o beige, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">06</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Nike, swoosh grande">
-                  <img src="img/camisetas/camiseta-07.webp" alt="Camiseta modelo 07 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca Nike, swoosh grande" data-marca="Nike">
+                  <img src="img/camisetas/camiseta-07.webp" alt="Camiseta blanca Nike, swoosh grande, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">07</span>
                 </button>
-              </div>
-              <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Adidas negra logo grande o blanca Football #3">
-                  <img src="img/camisetas/camiseta-08.webp" alt="Camiseta modelo 08 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
-                  <span class="cat-numero">08</span>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Adidas Training negra o blanca Performance">
-                  <img src="img/camisetas/camiseta-09.webp" alt="Camiseta modelo 09 disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Adidas negra logo grande o blanca Football #3" data-marca="Adidas">
+                  <img src="img/camisetas/camiseta-08.webp" alt="Camiseta Adidas negra logo grande o blanca Football #3, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
+                  <span class="cat-numero">08</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div class="carousel-slide">
+                <button type="button" class="cat-foto" data-descripcion="Adidas Training negra o blanca Performance" data-marca="Adidas">
+                  <img src="img/camisetas/camiseta-09.webp" alt="Camiseta Adidas Training negra o blanca Performance, disponible en PRESENCIA, Cartagena" width="1200" height="1600" loading="lazy" decoding="async">
                   <span class="cat-numero">09</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -374,7 +512,7 @@
             <button type="button" class="carousel-flecha carousel-flecha-next" aria-label="Foto siguiente">
               <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="carousel-dots" role="tablist" aria-label="Navegación del carrusel de camisetas"></div>
+            <div class="carousel-dots" aria-live="polite" aria-label="Foto actual del carrusel de camisetas"></div>
           </div>
         </div>
 
@@ -393,135 +531,213 @@
           <div class="carousel carousel-cuadrado" data-carousel>
             <div class="carousel-pista" tabindex="0" aria-label="Fotos de gorras, desliza o usa las flechas para ver más">
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates">
-                  <span class="cat-nuevo">Nuevo</span>
-                  <img src="img/gorras/gorra-01.webp" alt="Gorra modelo 01 disponible en PRESENCIA, Cartagena" width="1280" height="853" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates" data-marca="MLB">
+                  <img src="img/gorras/gorra-01.webp" alt="Gorras en estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates (foto 01), disponibles en PRESENCIA, Cartagena" width="1280" height="853" loading="lazy" decoding="async">
                   <span class="cat-numero">01</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Columbia: negra, blanca, roja bandera-peces, gris bandera-peces, negra PHG, negra montaña">
-                  <span class="cat-nuevo">Nuevo</span>
-                  <img src="img/gorras/gorra-02.webp" alt="Gorra modelo 02 disponible en PRESENCIA, Cartagena" width="1280" height="851" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Columbia: negra, blanca, roja bandera-peces, gris bandera-peces, negra PHG, negra montaña" data-marca="Columbia">
+                  <img src="img/gorras/gorra-02.webp" alt="Gorras en estante Columbia: negra, blanca, roja bandera-peces, gris bandera-peces, negra PHG, negra montaña, disponibles en PRESENCIA, Cartagena" width="1280" height="851" loading="lazy" decoding="async">
                   <span class="cat-numero">02</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="NY Yankees beige, visera blanca, New Era 59Fifty">
-                  <span class="cat-nuevo">Nuevo</span>
-                  <img src="img/gorras/gorra-03.webp" alt="Gorra modelo 03 disponible en PRESENCIA, Cartagena" width="1087" height="976" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="NY Yankees beige, visera blanca, New Era 59Fifty" data-marca="New Era|MLB">
+                  <img src="img/gorras/gorra-03.webp" alt="Gorra NY Yankees beige, visera blanca, New Era 59Fifty, disponible en PRESENCIA, Cartagena" width="1087" height="976" loading="lazy" decoding="async">
                   <span class="cat-numero">03</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Nike: negra Marlins, celeste Red Sox B, rosada NY roja">
-                  <span class="cat-nuevo">Nuevo</span>
-                  <img src="img/gorras/gorra-04.webp" alt="Gorra modelo 04 disponible en PRESENCIA, Cartagena" width="992" height="1087" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Nike: negra Marlins, celeste Red Sox B, rosada NY roja" data-marca="Nike|MLB">
+                  <img src="img/gorras/gorra-04.webp" alt="Gorras en estante Nike: negra Marlins, celeste Red Sox B, rosada NY roja, disponibles en PRESENCIA, Cartagena" width="992" height="1087" loading="lazy" decoding="async">
                   <span class="cat-numero">04</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="vitrina Columbia (PFG, montaña, bandera-peces, variadas) más LA y Pirates">
-                  <span class="cat-nuevo">Nuevo</span>
-                  <img src="img/gorras/gorra-05.webp" alt="Gorra modelo 05 disponible en PRESENCIA, Cartagena" width="1402" height="1122" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="vitrina Columbia (PFG, montaña, bandera-peces, variadas) más LA y Pirates" data-marca="Columbia|MLB">
+                  <img src="img/gorras/gorra-05.webp" alt="Gorras en vitrina Columbia (PFG, montaña, bandera-peces, variadas) más LA y Pirates, disponibles en PRESENCIA, Cartagena" width="1402" height="1122" loading="lazy" decoding="async">
                   <span class="cat-numero">05</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante variado: negra Athletics A's, azul NY, negra/amarilla Pirates P">
-                  <span class="cat-nuevo">Nuevo</span>
-                  <img src="img/gorras/gorra-06.webp" alt="Gorra modelo 06 disponible en PRESENCIA, Cartagena" width="1052" height="1008" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante variado: negra Athletics A's, azul NY, negra/amarilla Pirates P" data-marca="MLB">
+                  <img src="img/gorras/gorra-06.webp" alt="Gorras en estante variado: negra Athletics A's, azul NY, negra/amarilla Pirates P, disponibles en PRESENCIA, Cartagena" width="1052" height="1008" loading="lazy" decoding="async">
                   <span class="cat-numero">06</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Air Jordan negra, letras AIR JORDAN rojas y Jumpman">
-                  <img src="img/gorras/gorra-07.webp" alt="Gorra modelo 07 disponible en PRESENCIA, Cartagena" width="849" height="1280" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Air Jordan negra, letras AIR JORDAN rojas y Jumpman" data-marca="Jordan">
+                  <img src="img/gorras/gorra-07.webp" alt="Gorra Air Jordan negra, letras AIR JORDAN rojas y Jumpman, disponible en PRESENCIA, Cartagena" width="849" height="1280" loading="lazy" decoding="async">
                   <span class="cat-numero">07</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Air Jordan negra, Jumpman rojo y 23">
-                  <img src="img/gorras/gorra-08.webp" alt="Gorra modelo 08 disponible en PRESENCIA, Cartagena" width="841" height="1280" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Air Jordan negra, Jumpman rojo y 23" data-marca="Jordan">
+                  <img src="img/gorras/gorra-08.webp" alt="Gorra Air Jordan negra, Jumpman rojo y 23, disponible en PRESENCIA, Cartagena" width="841" height="1280" loading="lazy" decoding="async">
                   <span class="cat-numero">08</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Columbia: negra, blanca, roja, gris y 2 negras (banderas, montaña, PHG)">
-                  <img src="img/gorras/gorra-09.webp" alt="Gorra modelo 09 disponible en PRESENCIA, Cartagena" width="1600" height="1007" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Columbia: negra, blanca, roja, gris y 2 negras (banderas, montaña, PHG)" data-marca="Columbia">
+                  <img src="img/gorras/gorra-09.webp" alt="Gorras en estante Columbia: negra, blanca, roja, gris y 2 negras (banderas, montaña, PHG) (foto 09), disponibles en PRESENCIA, Cartagena" width="1600" height="1007" loading="lazy" decoding="async">
                   <span class="cat-numero">09</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Adidas: negra logo grande, blanca Skateboarding, negra trébol">
-                  <img src="img/gorras/gorra-10.webp" alt="Gorra modelo 10 disponible en PRESENCIA, Cartagena" width="1600" height="1268" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Adidas: negra logo grande, blanca Skateboarding, negra trébol" data-marca="Adidas">
+                  <img src="img/gorras/gorra-10.webp" alt="Gorras en estante Adidas: negra logo grande, blanca Skateboarding, negra trébol, disponibles en PRESENCIA, Cartagena" width="1600" height="1268" loading="lazy" decoding="async">
                   <span class="cat-numero">10</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Supreme: negra y morada, box logo">
-                  <img src="img/gorras/gorra-11.webp" alt="Gorra modelo 11 disponible en PRESENCIA, Cartagena" width="1600" height="768" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Supreme: negra y morada, box logo" data-marca="Supreme">
+                  <img src="img/gorras/gorra-11.webp" alt="Gorras en estante Supreme: negra y morada, box logo, disponibles en PRESENCIA, Cartagena" width="1600" height="768" loading="lazy" decoding="async">
                   <span class="cat-numero">11</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Nike: verde Just Do It y roja/blanca Angels">
-                  <img src="img/gorras/gorra-12.webp" alt="Gorra modelo 12 disponible en PRESENCIA, Cartagena" width="1600" height="764" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Nike: verde Just Do It y roja/blanca Angels" data-marca="Nike">
+                  <img src="img/gorras/gorra-12.webp" alt="Gorras en estante Nike: verde Just Do It y roja/blanca Angels, disponibles en PRESENCIA, Cartagena" width="1600" height="764" loading="lazy" decoding="async">
                   <span class="cat-numero">12</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Lacoste: roja cocodrilo, blanca y celeste script">
-                  <img src="img/gorras/gorra-13.webp" alt="Gorra modelo 13 disponible en PRESENCIA, Cartagena" width="1600" height="1207" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Lacoste: roja cocodrilo, blanca y celeste script" data-marca="Lacoste">
+                  <img src="img/gorras/gorra-13.webp" alt="Gorras en estante Lacoste: roja cocodrilo, blanca y celeste script, disponibles en PRESENCIA, Cartagena" width="1600" height="1207" loading="lazy" decoding="async">
                   <span class="cat-numero">13</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Columbia: negra, blanca, roja, gris y 2 negras (banderas, montaña, PHG)">
-                  <img src="img/gorras/gorra-14.webp" alt="Gorra modelo 14 disponible en PRESENCIA, Cartagena" width="1600" height="1050" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Columbia: negra, blanca, roja, gris y 2 negras (banderas, montaña, PHG)" data-marca="Columbia">
+                  <img src="img/gorras/gorra-14.webp" alt="Gorras en estante Columbia: negra, blanca, roja, gris y 2 negras (banderas, montaña, PHG) (foto 14), disponibles en PRESENCIA, Cartagena" width="1600" height="1050" loading="lazy" decoding="async">
                   <span class="cat-numero">14</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, verde Nautica">
-                  <img src="img/gorras/gorra-15.webp" alt="Gorra modelo 15 disponible en PRESENCIA, Cartagena" width="1600" height="1063" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, verde Nautica" data-marca="Tommy Hilfiger|Nautica">
+                  <img src="img/gorras/gorra-15.webp" alt="Gorras en estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, verde Nautica (foto 15), disponibles en PRESENCIA, Cartagena" width="1600" height="1063" loading="lazy" decoding="async">
                   <span class="cat-numero">15</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, verde Nautica">
-                  <img src="img/gorras/gorra-16.webp" alt="Gorra modelo 16 disponible en PRESENCIA, Cartagena" width="1600" height="1469" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, verde Nautica" data-marca="Tommy Hilfiger|Nautica">
+                  <img src="img/gorras/gorra-16.webp" alt="Gorras en estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, verde Nautica (foto 16), disponibles en PRESENCIA, Cartagena" width="1600" height="1469" loading="lazy" decoding="async">
                   <span class="cat-numero">16</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates">
-                  <img src="img/gorras/gorra-17.webp" alt="Gorra modelo 17 disponible en PRESENCIA, Cartagena" width="1600" height="1078" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates" data-marca="MLB">
+                  <img src="img/gorras/gorra-17.webp" alt="Gorras en estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates (foto 17), disponibles en PRESENCIA, Cartagena" width="1600" height="1078" loading="lazy" decoding="async">
                   <span class="cat-numero">17</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates">
-                  <img src="img/gorras/gorra-18.webp" alt="Gorra modelo 18 disponible en PRESENCIA, Cartagena" width="1600" height="1285" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates" data-marca="MLB">
+                  <img src="img/gorras/gorra-18.webp" alt="Gorras en estante MLB: NY, Diamondbacks, Saints, Dodgers LA, Mariners, Expos, Pirates (foto 18), disponibles en PRESENCIA, Cartagena" width="1600" height="1285" loading="lazy" decoding="async">
                   <span class="cat-numero">18</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, negra Nautica">
-                  <img src="img/gorras/gorra-19.webp" alt="Gorra modelo 19 disponible en PRESENCIA, Cartagena" width="1600" height="970" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, negra Nautica" data-marca="Tommy Hilfiger|Nautica">
+                  <img src="img/gorras/gorra-19.webp" alt="Gorras en estante Nautica y Tommy Hilfiger: 2 amarillas, amarilla Nautica 1983, negra Nautica, disponibles en PRESENCIA, Cartagena" width="1600" height="970" loading="lazy" decoding="async">
                   <span class="cat-numero">19</span>
                 </button>
-              </div>
-              <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Dodgers LA blanca y azul, logo arcoíris">
-                  <img src="img/gorras/gorra-20.webp" alt="Gorra modelo 20 disponible en PRESENCIA, Cartagena" width="981" height="1280" loading="lazy" decoding="async">
-                  <span class="cat-numero">20</span>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="Dodgers LA blanca y azul, logo arcoíris (perfil, parche Dodger Stadium)">
-                  <img src="img/gorras/gorra-21.webp" alt="Gorra modelo 21 disponible en PRESENCIA, Cartagena" width="822" height="1280" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="Dodgers LA blanca y azul, logo arcoíris" data-marca="MLB">
+                  <img src="img/gorras/gorra-20.webp" alt="Gorra Dodgers LA blanca y azul, logo arcoíris, disponible en PRESENCIA, Cartagena" width="981" height="1280" loading="lazy" decoding="async">
+                  <span class="cat-numero">20</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div class="carousel-slide">
+                <button type="button" class="cat-foto" data-descripcion="Dodgers LA blanca y azul, logo arcoíris (perfil, parche Dodger Stadium)" data-marca="MLB">
+                  <img src="img/gorras/gorra-21.webp" alt="Gorra Dodgers LA blanca y azul, logo arcoíris (perfil, parche Dodger Stadium), disponible en PRESENCIA, Cartagena" width="822" height="1280" loading="lazy" decoding="async">
                   <span class="cat-numero">21</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -531,7 +747,7 @@
             <button type="button" class="carousel-flecha carousel-flecha-next" aria-label="Foto siguiente">
               <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="carousel-dots" role="tablist" aria-label="Navegación del carrusel de gorras"></div>
+            <div class="carousel-dots" aria-live="polite" aria-label="Foto actual del carrusel de gorras"></div>
           </div>
         </div>
 
@@ -550,153 +766,253 @@
           <div class="carousel carousel-horizontal" data-carousel>
             <div class="carousel-pista" tabindex="0" aria-label="Fotos de pantalonetas, desliza o usa las flechas para ver más">
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul claro y negro Hugo Boss, letras BOSS grandes">
-                  <img src="img/pantalonetas/pantaloneta-01.webp" alt="Pantaloneta modelo 01 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul claro y negro Hugo Boss, letras BOSS grandes" data-marca="Hugo Boss">
+                  <img src="img/pantalonetas/pantaloneta-01.webp" alt="Pantaloneta azul claro y negro Hugo Boss, letras BOSS grandes (foto 01), disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">01</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="roja Tommy Hilfiger, franja blanca y azul marino">
-                  <img src="img/pantalonetas/pantaloneta-02.webp" alt="Pantaloneta modelo 02 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="roja Tommy Hilfiger, franja blanca y azul marino" data-marca="Tommy Hilfiger">
+                  <img src="img/pantalonetas/pantaloneta-02.webp" alt="Pantaloneta roja Tommy Hilfiger, franja blanca y azul marino, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">02</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="gris claro y negro Nike, swoosh grande">
-                  <img src="img/pantalonetas/pantaloneta-03.webp" alt="Pantaloneta modelo 03 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="gris claro y negro Nike, swoosh grande" data-marca="Nike">
+                  <img src="img/pantalonetas/pantaloneta-03.webp" alt="Pantaloneta gris claro y negro Nike, swoosh grande, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">03</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Nautica, palmeras a color">
-                  <img src="img/pantalonetas/pantaloneta-04.webp" alt="Pantaloneta modelo 04 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca Nautica, palmeras a color" data-marca="Nautica">
+                  <img src="img/pantalonetas/pantaloneta-04.webp" alt="Pantaloneta blanca Nautica, palmeras a color, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">04</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanco, beige y azul marino Hugo Boss">
-                  <img src="img/pantalonetas/pantaloneta-05.webp" alt="Pantaloneta modelo 05 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanco, beige y azul marino Hugo Boss" data-marca="Hugo Boss">
+                  <img src="img/pantalonetas/pantaloneta-05.webp" alt="Pantaloneta blanco, beige y azul marino Hugo Boss (foto 05), disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">05</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="negra Nike, letras NIKE rosa y swoosh blanco">
-                  <img src="img/pantalonetas/pantaloneta-06.webp" alt="Pantaloneta modelo 06 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="negra Nike, letras NIKE rosa y swoosh blanco" data-marca="Nike">
+                  <img src="img/pantalonetas/pantaloneta-06.webp" alt="Pantaloneta negra Nike, letras NIKE rosa y swoosh blanco, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">06</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul claro y negro Hugo Boss, letras BOSS grandes">
-                  <img src="img/pantalonetas/pantaloneta-07.webp" alt="Pantaloneta modelo 07 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul claro y negro Hugo Boss, letras BOSS grandes" data-marca="Hugo Boss">
+                  <img src="img/pantalonetas/pantaloneta-07.webp" alt="Pantaloneta azul claro y negro Hugo Boss, letras BOSS grandes (foto 07), disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">07</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanco, beige y azul marino Hugo Boss">
-                  <img src="img/pantalonetas/pantaloneta-08.webp" alt="Pantaloneta modelo 08 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanco, beige y azul marino Hugo Boss" data-marca="Hugo Boss">
+                  <img src="img/pantalonetas/pantaloneta-08.webp" alt="Pantaloneta blanco, beige y azul marino Hugo Boss (foto 08), disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">08</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="roja Tommy Hilfiger, letras Tommy Jeans">
-                  <img src="img/pantalonetas/pantaloneta-09.webp" alt="Pantaloneta modelo 09 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="roja Tommy Hilfiger, letras Tommy Jeans" data-marca="Tommy Hilfiger|Tommy Jeans">
+                  <img src="img/pantalonetas/pantaloneta-09.webp" alt="Pantaloneta roja Tommy Hilfiger, letras Tommy Jeans, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">09</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Tommy Hilfiger, franja azul marino">
-                  <img src="img/pantalonetas/pantaloneta-10.webp" alt="Pantaloneta modelo 10 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca Tommy Hilfiger, franja azul marino" data-marca="Tommy Hilfiger">
+                  <img src="img/pantalonetas/pantaloneta-10.webp" alt="Pantaloneta blanca Tommy Hilfiger, franja azul marino, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">10</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="celeste Hugo Boss, franjas beige y gris">
-                  <img src="img/pantalonetas/pantaloneta-11.webp" alt="Pantaloneta modelo 11 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="celeste Hugo Boss, franjas beige y gris" data-marca="Hugo Boss">
+                  <img src="img/pantalonetas/pantaloneta-11.webp" alt="Pantaloneta celeste Hugo Boss, franjas beige y gris, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">11</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="celeste Tommy Hilfiger, escudo TH">
-                  <img src="img/pantalonetas/pantaloneta-12.webp" alt="Pantaloneta modelo 12 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="celeste Tommy Hilfiger, escudo TH" data-marca="Tommy Hilfiger">
+                  <img src="img/pantalonetas/pantaloneta-12.webp" alt="Pantaloneta celeste Tommy Hilfiger, escudo TH, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">12</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Nautica, palmeras cafés">
-                  <img src="img/pantalonetas/pantaloneta-13.webp" alt="Pantaloneta modelo 13 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca Nautica, palmeras cafés" data-marca="Nautica">
+                  <img src="img/pantalonetas/pantaloneta-13.webp" alt="Pantaloneta blanca Nautica, palmeras cafés, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">13</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul marino y celeste Nike, Est. 1972">
-                  <img src="img/pantalonetas/pantaloneta-14.webp" alt="Pantaloneta modelo 14 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul marino y celeste Nike, Est. 1972" data-marca="Nike">
+                  <img src="img/pantalonetas/pantaloneta-14.webp" alt="Pantaloneta azul marino y celeste Nike, Est. 1972 (foto 14), disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">14</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="negra Nike, letras NIKE rosa y swoosh grande diagonal">
-                  <img src="img/pantalonetas/pantaloneta-15.webp" alt="Pantaloneta modelo 15 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="negra Nike, letras NIKE rosa y swoosh grande diagonal" data-marca="Nike">
+                  <img src="img/pantalonetas/pantaloneta-15.webp" alt="Pantaloneta negra Nike, letras NIKE rosa y swoosh grande diagonal, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">15</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul marino Tommy Jeans, franja roja y crema">
-                  <img src="img/pantalonetas/pantaloneta-16.webp" alt="Pantaloneta modelo 16 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul marino Tommy Jeans, franja roja y crema" data-marca="Tommy Jeans">
+                  <img src="img/pantalonetas/pantaloneta-16.webp" alt="Pantaloneta azul marino Tommy Jeans, franja roja y crema, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">16</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Nautica, palmeras negras">
-                  <img src="img/pantalonetas/pantaloneta-17.webp" alt="Pantaloneta modelo 17 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca Nautica, palmeras negras" data-marca="Nautica">
+                  <img src="img/pantalonetas/pantaloneta-17.webp" alt="Pantaloneta blanca Nautica, palmeras negras, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">17</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca y negra Nautica">
-                  <img src="img/pantalonetas/pantaloneta-18.webp" alt="Pantaloneta modelo 18 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca y negra Nautica" data-marca="Nautica">
+                  <img src="img/pantalonetas/pantaloneta-18.webp" alt="Pantaloneta blanca y negra Nautica, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">18</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul degradado Nautica, palmera negra grande">
-                  <img src="img/pantalonetas/pantaloneta-19.webp" alt="Pantaloneta modelo 19 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul degradado Nautica, palmera negra grande" data-marca="Nautica">
+                  <img src="img/pantalonetas/pantaloneta-19.webp" alt="Pantaloneta azul degradado Nautica, palmera negra grande, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">19</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Tommy Hilfiger, escudo TH">
-                  <img src="img/pantalonetas/pantaloneta-20.webp" alt="Pantaloneta modelo 20 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca Tommy Hilfiger, escudo TH" data-marca="Tommy Hilfiger">
+                  <img src="img/pantalonetas/pantaloneta-20.webp" alt="Pantaloneta blanca Tommy Hilfiger, escudo TH, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">20</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca y azul marino Tommy Hilfiger, escudo TH">
-                  <img src="img/pantalonetas/pantaloneta-21.webp" alt="Pantaloneta modelo 21 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="blanca y azul marino Tommy Hilfiger, escudo TH" data-marca="Tommy Hilfiger">
+                  <img src="img/pantalonetas/pantaloneta-21.webp" alt="Pantaloneta blanca y azul marino Tommy Hilfiger, escudo TH, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">21</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="azul marino y celeste Nike, Est. 1972">
-                  <img src="img/pantalonetas/pantaloneta-22.webp" alt="Pantaloneta modelo 22 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="azul marino y celeste Nike, Est. 1972" data-marca="Nike">
+                  <img src="img/pantalonetas/pantaloneta-22.webp" alt="Pantaloneta azul marino y celeste Nike, Est. 1972 (foto 22), disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">22</span>
                 </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="gris, blanco y azul marino Nautica, franja coral">
-                  <img src="img/pantalonetas/pantaloneta-23.webp" alt="Pantaloneta modelo 23 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="gris, blanco y azul marino Nautica, franja coral" data-marca="Nautica">
+                  <img src="img/pantalonetas/pantaloneta-23.webp" alt="Pantaloneta gris, blanco y azul marino Nautica, franja coral, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">23</span>
                 </button>
-              </div>
-              <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="negra Hugo Boss, letras BOSS grandes beige">
-                  <img src="img/pantalonetas/pantaloneta-24.webp" alt="Pantaloneta modelo 24 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
-                  <span class="cat-numero">24</span>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
               <div class="carousel-slide">
-                <button type="button" class="cat-foto" data-descripcion="blanca Tommy Hilfiger, franjas roja y azul marino">
-                  <img src="img/pantalonetas/pantaloneta-25.webp" alt="Pantaloneta modelo 25 disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                <button type="button" class="cat-foto" data-descripcion="negra Hugo Boss, letras BOSS grandes beige" data-marca="Hugo Boss">
+                  <img src="img/pantalonetas/pantaloneta-24.webp" alt="Pantaloneta negra Hugo Boss, letras BOSS grandes beige, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
+                  <span class="cat-numero">24</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </div>
+              <div class="carousel-slide">
+                <button type="button" class="cat-foto" data-descripcion="blanca Tommy Hilfiger, franjas roja y azul marino" data-marca="Tommy Hilfiger">
+                  <img src="img/pantalonetas/pantaloneta-25.webp" alt="Pantaloneta blanca Tommy Hilfiger, franjas roja y azul marino, disponible en PRESENCIA, Cartagena" width="1600" height="950" loading="lazy" decoding="async">
                   <span class="cat-numero">25</span>
+                </button>
+                <button type="button" class="cat-anadir" aria-pressed="false" aria-label="Añadir esta foto a mi selección">
+                  <svg class="cat-anadir-mas" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5.5v13M5.5 12h13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"/></svg>
+                  <svg class="cat-anadir-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5.5 12.4 4.3 4.3 8.7-9.4" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                 </button>
               </div>
             </div>
@@ -706,7 +1022,7 @@
             <button type="button" class="carousel-flecha carousel-flecha-next" aria-label="Foto siguiente">
               <svg viewBox="0 0 24 24"><path d="m9 5 7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="carousel-dots" role="tablist" aria-label="Navegación del carrusel de pantalonetas"></div>
+            <div class="carousel-dots" aria-live="polite" aria-label="Foto actual del carrusel de pantalonetas"></div>
           </div>
         </div>
 
@@ -742,7 +1058,7 @@
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5 8 12l7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <figure class="lightbox-figura">
-          <img id="lightboxImg" src="" alt="">
+          <img id="lightboxImg" alt="">
           <figcaption id="lightboxCaption"></figcaption>
         </figure>
         <button type="button" class="lightbox-nav lightbox-next" id="lightboxNext" aria-label="Foto siguiente">
@@ -818,6 +1134,36 @@
       </div>
     </section>
 
+    <!-- ============ RESEÑAS DE CLIENTES ============
+         ESTRUCTURA LISTA, CONTENIDO PENDIENTE.
+
+         Faltan los testimonios REALES de la tienda. No se inventan reseñas:
+         publicar opiniones falsas engaña al comprador y Google penaliza el
+         marcado Review fraudulento. Por eso esta sección todavía NO lleva
+         datos estructurados; se añadirán junto con los testimonios de verdad.
+
+         La sección va con el atributo `hidden` para no enseñarle al cliente final
+         un aviso interno que dice "Pendiente". El diseño ya está hecho y probado.
+
+         Para encenderla: quitar el `hidden` del <section> y sustituir el aviso
+         .resenas-pendiente por una <ul class="resenas-grid"> con tarjetas
+         <li class="resena-card"> (texto en .resena-texto y nombre en .resena-autor). -->
+    <section class="resenas" id="resenas" hidden>
+      <div class="contenedor">
+        <header class="seccion-cabecera reveal">
+          <p class="script-oro">Lo que dicen de nosotros</p>
+          <h2 class="titulo-seccion">Clientes de Presencia</h2>
+        </header>
+
+        <p class="resenas-pendiente reveal">
+          <mark class="pendiente">Pendiente</mark>
+          Aquí van los testimonios reales de los clientes de la tienda.
+          Envíale a JX Company los mensajes o comentarios que quieras mostrar
+          (con el nombre de quien los escribió) y se publican en esta sección.
+        </p>
+      </div>
+    </section>
+
     <!-- ============ UBICACIÓN ============ -->
     <section class="ubicacion" id="ubicacion">
       <div class="contenedor">
@@ -877,6 +1223,62 @@
       </div>
     </section>
 
+    <!-- ============ PREGUNTAS FRECUENTES ============ -->
+    <section class="faq" id="preguntas">
+      <div class="contenedor">
+        <header class="seccion-cabecera reveal">
+          <p class="script-oro">Antes de escribirnos</p>
+          <h2 class="titulo-seccion">Preguntas frecuentes</h2>
+          <p class="seccion-intro">Lo que más nos preguntan por WhatsApp, resuelto aquí mismo.</p>
+        </header>
+
+        <div class="faq-lista reveal">
+          <details class="faq-item">
+            <summary class="faq-pregunta">
+              <span>¿Cuánto cuestan las prendas?</span>
+              <span class="faq-signo" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-respuesta"><p>Los precios no se publican en la página porque cambian según el modelo y la disponibilidad. Escríbenos por WhatsApp con la foto que te gustó y te decimos el precio al momento.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-pregunta">
+              <span>¿Qué tallas tienen disponibles?</span>
+              <span class="faq-signo" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-respuesta"><p>Depende del modelo. Escríbenos por WhatsApp indicando la foto que te interesa y te confirmamos qué tallas hay en ese momento.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-pregunta">
+              <span>¿Hacen domicilios en Cartagena?</span>
+              <span class="faq-signo" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-respuesta"><p>Sí. Los domicilios son gratis en toda Cartagena hasta el 31 de octubre de 2026.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-pregunta">
+              <span>¿Envían fuera de Cartagena?</span>
+              <span class="faq-signo" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-respuesta"><p>Sí, hacemos envíos a otras ciudades. El costo y el tiempo de entrega se acuerdan por WhatsApp según el destino.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-pregunta">
+              <span>¿Cómo puedo pagar?</span>
+              <span class="faq-signo" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-respuesta"><p>Aceptamos efectivo, Nequi, Daviplata y transferencia bancaria.</p></div>
+          </details>
+          <details class="faq-item">
+            <summary class="faq-pregunta">
+              <span>¿Dónde están y en qué horario atienden?</span>
+              <span class="faq-signo" aria-hidden="true"></span>
+            </summary>
+            <div class="faq-respuesta"><p>Estamos en Mz S Lote 11, Cl 10B, barrio Nuevo Campestre, Cartagena de Indias. Atendemos todos los días de 8:00 a. m. a 7:00 p. m.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ CTA FINAL ============ -->
     <section class="cta-final" id="contacto">
       <div class="contenedor cta-caja reveal">
@@ -913,6 +1315,7 @@
           <li><a href="#catalogo">Catálogo</a></li>
           <li><a href="#nosotros">Nosotros</a></li>
           <li><a href="#ubicacion">Ubicación</a></li>
+          <li><a href="#preguntas">Preguntas frecuentes</a></li>
           <li><a href="#contacto">Contacto</a></li>
         </ul>
       </nav>
@@ -950,6 +1353,25 @@
       <p class="credito">Diseño y desarrollo: <strong>JX Company</strong></p>
     </div>
   </footer>
+
+  <!-- Barra de selección múltiple: arma un solo mensaje con varias prendas -->
+  <div class="seleccion-barra" id="seleccionBarra" hidden>
+    <div class="contenedor seleccion-caja">
+      <p class="seleccion-texto" aria-live="polite"><strong id="seleccionCantidad">0</strong> <span id="seleccionPalabra">prendas seleccionadas</span></p>
+      <div class="seleccion-acciones">
+        <button type="button" class="seleccion-limpiar" id="seleccionLimpiar">Vaciar</button>
+        <a href="#" class="btn btn-oro seleccion-enviar" id="seleccionEnviar" target="_blank" rel="noopener">
+          <svg class="icono" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          Enviar por WhatsApp
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Botón para volver al inicio: la página es muy larga (catálogo de 65 fotos) -->
+  <button type="button" class="ir-arriba" id="irArriba" aria-label="Volver al inicio de la página" hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V6m0 0-6 6m6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
 
   <!-- Botón flotante de WhatsApp -->
   <a href="https://wa.me/573008207862?text=Hola%20%F0%9F%91%8B%2C%20vi%20la%20p%C3%A1gina%20de%20PRESENCIA%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n"
